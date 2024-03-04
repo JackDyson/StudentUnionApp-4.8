@@ -1,0 +1,49 @@
+﻿/* Light Mode */
+:root {
+    --ct-card-bg: #f8f9fa;
+    --ct-body-bg: #e5e5e5;
+    --ct-font-color: #000000;
+    --ct-error-color: #FF1122;
+}
+/* Dark Mode */
+body[theme="dark"] {
+    --ct-card-bg: #36454f;
+    --ct-body-bg: #343a40;
+    --ct-font-color: #f8f9fa;
+    --ct-error-color: #FF1122;
+}
+
+body {
+    color: var(--ct-font-color);
+    background-color: var(--ct-body-bg);
+    transition: all ease-in-out 0.3s;
+}
+
+.card {
+    background-color: var(--ct-card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.field-validation-error {
+    color: var(--ct-error-color)
+}
+.input-validation-error {
+    border-color: var(--ct-error-color);
+}
+/* Form Elements */
+.btn {
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    padding: 6px 20px 10px 20px;
+}
+input.form-control {
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+}

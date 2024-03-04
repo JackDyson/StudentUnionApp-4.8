@@ -1,0 +1,72 @@
+﻿@model StudentUnionApp.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="~/Content/css/global.css" />
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center">
+        <label class="form-check-label" for="theme">Toggle Theme:</label>
+        <input id="theme" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
+    </div>
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+        <div class="card mx-auto" style="width: 300px">
+            <div class="card-body">
+                <h2 class="text-center">Login</h2>
+                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="text-center">
+                        <input type="submit" value="Login" class="btn btn-primary mt-4" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    !function () {
+        var theme = localStorage.getItem('theme');
+        if (theme) {
+            $('body').attr('theme', theme);
+            if (theme === 'dark') {
+                $('.form-check').attr('checked', true);
+            }
+        }
+    }();
+    $('#theme').on('click', function () {
+        if ($('.form-check').is(':checked')) {
+            $('body').attr('theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+        else {
+            $('body').attr('theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+</script>
