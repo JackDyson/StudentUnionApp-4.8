@@ -3,31 +3,74 @@
 }
 
 <main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
 
     <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <section class="col-md-12" aria-labelledby="gettingStartedTitle">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <table id="test-table" class="w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Club Name</th>
+                                        <th>Position</th>
+                                        <th>Name</th>
+                                        <th>Pref. Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Agreement</th>
+                                        <th>Training</th>
+                                        <th>Membership</th>
+                                        <th>Food</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
         <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
         </section>
         <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+
         </section>
     </div>
 </main>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+	        $.ajax({
+		        url: '@Url.Action("GetSUTest", "Home")',
+		        type: 'GET',
+		        dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var row = '<tr>' +
+                            '<td>' + data[i].Club_Name + '</td>' +
+                            '<td>' + data[i].Position + '</td>' +
+                            '<td>' + data[i].Student_Name + '</td>' +
+                            '<td>' + data[i].Preferred_Name + '</td>' +
+                            '<td>' + data[i].Phone_Number + '</td>' +
+                            '<td>' + data[i].Email_Address + '</td>' +
+                            '<td>' + data[i].Agreement_Signed + '</td>' +
+                            '<td>' + data[i].Training_Complete + '</td>' +
+                            '<td>' + data[i].Membership_Purchased + '</td>' +
+                            '<td>' + data[i].Food_Certified + '</td>' +
+                            '</tr>';
+                        $('#test-table tbody').append(row);
+                    }
+		        },
+		        error: function (error) {
+			        console.error(error);
+		        }
+	        });
+        });
+    </script>   
+}

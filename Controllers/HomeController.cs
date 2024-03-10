@@ -1,6 +1,9 @@
-﻿using StudentUnionApp.Models;
+﻿using Microsoft.Ajax.Utilities;
+using StudentUnionApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +12,7 @@ namespace StudentUnionApp.Controllers
 {
     public class HomeController : Controller
     {
+        StudentUnionContext _context = new StudentUnionContext();
         public ActionResult Index()
         {
             return View();
@@ -63,9 +67,21 @@ namespace StudentUnionApp.Controllers
 
         private bool CheckUserCredentials(string email, string password)
         {
-            // Placeholder for actual authentication logic
             // This method should return true if credentials are valid, false otherwise
-            return false; // Always return false in this placeholder method
+            var staff = _context.Staff.ToList();
+            foreach (var s in staff)
+            {
+                if (s.Email == email && s.Password == password)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public ActionResult GetSUTest()
+        {
+            return Json(_context.Student_Union_Test.ToList().OrderBy(d => d.Club_Name), JsonRequestBehavior.AllowGet);
         }
     }
 }

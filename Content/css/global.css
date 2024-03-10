@@ -27,6 +27,7 @@ body {
 
 .card-body {
     padding: 30px;
+    color: var(--ct-font-color);
 }
 
 .field-validation-error {
@@ -46,4 +47,16 @@ input.form-control {
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     border-radius: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--ct-font-color);
+}
+
+[class*="control"] {
+    color: var(--ct-font-color);
+}
+
+.body-content {
+    margin-top: 1rem;
 }
