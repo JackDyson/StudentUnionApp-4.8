@@ -4,6 +4,9 @@
     --ct-body-bg: #e5e5e5;
     --ct-font-color: #000000;
     --ct-error-color: #FF1122;
+    --ct-nav-bg: #e72981;
+    --ct-nav-font-color: #ffffff;
+    --ct-nav-height: 50px;
 }
 /* Dark Mode */
 body[theme="dark"] {
@@ -11,6 +14,8 @@ body[theme="dark"] {
     --ct-body-bg: #343a40;
     --ct-font-color: #f8f9fa;
     --ct-error-color: #FF1122;
+    --ct-nav-bg: #b82067;
+    --ct-nav-font-color: #ffffff;
 }
 
 body {
@@ -58,5 +63,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .body-content {
-    margin-top: 1rem;
+    padding-top: calc(1rem + var(--ct-nav-height));
+}
+
+nav {
+    background-color: var(--ct-nav-bg);
+    color: var(--ct-nav-font-color);
+    box-shadow: 0 12px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed !important;
+    z-index: 1000;
+    margin-top: 0;
+    width: 100%;
+    height: var(--ct-nav-height);
+}
+
+.navbar-brand, .nav-link {
+    color: var(--ct-nav-font-color);
+}
+
+.sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: calc(1rem + var(--ct-nav-height));
+    z-index: 1;
 }
