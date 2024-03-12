@@ -35,13 +35,15 @@
         <footer>
             <p>&copy; @DateTime.Now.Year - Huddersfield Students' Union</p>
         </footer>
-    </div>    
+    </div>
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @Html.Raw("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js'></script>")
     <script src="~/Scripts/dataTables/datatables.min.js"></script>
     <script src="~/Scripts/global.js?release=@Guid.NewGuid()"></script>
     <script>
-        
+
     </script>
 
     @RenderSection("scripts", required: false)
