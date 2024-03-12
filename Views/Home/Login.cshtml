@@ -10,14 +10,10 @@
     <title>Login</title>
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LinetoCircular:wght@900&display=swap">
     <link rel="stylesheet" href="~/Content/css/global.css?release=@newGuid" />
 </head>
 <body>
-    <div class="d-flex justify-content-center align-items-center">
-        <label class="form-check-label" for="theme">Toggle Theme:</label>
-        <input id="theme" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
-    </div>
-
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
         <div class="card mx-auto" style="width: 300px">
             <div class="card-body">
@@ -50,24 +46,5 @@
 </body>
 </html>
 <script src="~/Scripts/jquery-3.7.1.min.js"></script>
-<script>
-    !function () {
-        var theme = localStorage.getItem('theme');
-        if (theme) {
-            $('body').attr('theme', theme);
-            if (theme === 'dark') {
-                $('.form-check').attr('checked', true);
-            }
-        }
-    }();
-    $(document).on("click", '#theme', function () {
-        if ($('.form-check').is(':checked')) {
-            $('body').attr('theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-        }
-        else {
-            $('body').attr('theme', 'light');
-            localStorage.setItem('theme', 'light');
-        }
-    });
-</script>
+<script src="~/Scripts/global.js?release=@Guid.NewGuid()"></script>
+

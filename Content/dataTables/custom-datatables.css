@@ -1,0 +1,80 @@
+﻿:root {
+    --header-bg: #E0E0E0;
+    --table-bg: #efeeee;
+}
+
+body[theme="dark"] {
+    --header-bg: #4A5B6A;
+    --table-bg: #5E6E7E;
+}
+
+thead {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: calc(1rem + var(--nav-height));
+    z-index: 1;
+    font-size: 0.8rem;
+}
+
+thead th {
+    background-color: var(--header-bg);
+    color: var(--font-color);
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    border-bottom: none !important;
+}
+
+table.dataTable tbody tr {
+    border-top: solid 4px var(--card-bg);
+}
+
+    table.dataTable tbody tr td {
+        border-bottom: none !important;
+        border-color: #00000000;
+        background-color: var(--card-bg);
+        padding-right: 12px !important;
+        padding-bottom: 3px !important;
+        padding-top: 2px !important;
+    }
+
+    table.dataTable tbody tr:hover td {
+        background-color: var(--table-bg);
+        cursor: pointer;
+    }
+        table.dataTable tbody tr.clicked td {
+            background-color: var(--accent2);
+        }
+
+        table.dataTable tbody tr td:first-child {
+            -webkit-border-top-left-radius: 0.75rem;
+            border-top-left-radius: 0.75rem;
+            -webkit-border-bottom-left-radius: 0.75rem;
+            border-bottom-left-radius: 0.75rem;
+        }
+        table.dataTable tbody tr td:last-child {
+            -webkit-border-top-right-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+            -webkit-border-bottom-right-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+        }
+
+.dt-buttons {
+    display: none;
+}
+
+.datatable-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+.datatable-header-container > * {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+.datatable-header-container > *:first-child {
+    margin-left: 0;
+}
+.datatable-header-container > *:last-child {
+    margin-right: 0;
+}

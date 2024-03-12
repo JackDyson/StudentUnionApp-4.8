@@ -7,23 +7,25 @@
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/Site.css" />
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="~/Content/dataTables/datatables.min.css" />
     <link rel="stylesheet" href="~/Content/css/global.css?release=@Guid.NewGuid()">
+    <link rel="stylesheet" href="~/Content/dataTables/custom-datatables.css?release=@Guid.NewGuid()" />
     @RenderSection("styles", required: false)
 </head>
-<body>
+<body theme="light" accent="pink">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
         <div class="container">
             @Html.ActionLink("HSU Admin", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+            <div class="navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Settings", "Settings", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
+                <i id="theme" class="uil uil-sunset"></i>
+                <i id="logout" class="uis uis-signout" style="margin-left: 1.25rem"></i>
             </div>
         </div>
     </nav>
@@ -36,26 +38,10 @@
     </div>    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/global.js?release=@Guid.NewGuid()"></script>
     <script>
-        !function () {
-            var theme = localStorage.getItem('theme');
-            if (theme) {
-                $('body').attr('theme', theme);
-                if (theme === 'dark') {
-                    $('.form-check').attr('checked', true);
-                }
-            }
-        }();
-        $(document).on("click", '#theme', function () {
-            if ($('.form-check').is(':checked')) {
-                $('body').attr('theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-            }
-            else {
-                $('body').attr('theme', 'light');
-                localStorage.setItem('theme', 'light');
-            }
-        });
+        
     </script>
 
     @RenderSection("scripts", required: false)
