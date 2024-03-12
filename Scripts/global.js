@@ -37,7 +37,7 @@ $(document).on("click", '#theme', function () {
 $(document).ready(function () {
     var bubblesEnabled = localStorage.getItem('bg-animation');
     if (bubblesEnabled === 'true') {
-        const numberOfBubbles = 13;
+        const numberOfBubbles = parseInt(parseInt(window.innerWidth) / 140);
         const container = $('body');
 
         for (let i = 0; i < numberOfBubbles; i++) {
