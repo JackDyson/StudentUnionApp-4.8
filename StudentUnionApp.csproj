@@ -144,6 +144,8 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\css\global.css" />
+    <Content Include="Content\dataTables\custom-datatables.css" />
+    <Content Include="Content\dataTables\datatables.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -153,7 +155,16 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\fonts\Corbel Bold Italic.ttf" />
+    <Content Include="Content\fonts\Corbel Bold.ttf" />
+    <Content Include="Content\fonts\Corbel Italic.ttf" />
+    <Content Include="Content\fonts\CORBEL.TTF" />
+    <Content Include="Content\fonts\CORBELB.TTF" />
+    <Content Include="Content\fonts\corbeli.ttf" />
+    <Content Include="Content\fonts\corbelz.ttf" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
+    <Content Include="Scripts\dataTables\datatables.min.js" />
+    <Content Include="Scripts\global.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
@@ -182,6 +193,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\Contact\" />
+    <Folder Include="Scripts\Home\" />
+    <Folder Include="Scripts\Settings\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -70,6 +70,12 @@ namespace StudentUnionApp.Controllers
             return View(model);
         }
 
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Home");
+        }
+
         private bool CheckUserCredentials(string email, string password)
         {
             // remove this later

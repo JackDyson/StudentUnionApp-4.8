@@ -1,8 +1,88 @@
 ﻿@{
     ViewBag.Title = "Settings";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
-
+<main>
+    <div class="row">
+        <section class="col-md-12" aria-labelledby="gettingStartedTitle">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="text-center">Settings</h3>      
+                            <hr />
+                            <section class="row">
+                                <div class="col-12">
+                                    <h4>Accent Colour</h4>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-check">
+                                        <input type="radio" id="pink" name="customRadio" class="form-check-input">
+                                        <label class="form-check-label" for="pink">Pink</label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-check">
+                                        <input type="radio" id="blue" name="customRadio" class="form-check-input">
+                                        <label class="form-check-label" for="blue">Blue</label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-check">
+                                        <input type="radio" id="green" name="customRadio" class="form-check-input">
+                                        <label class="form-check-label" for="green">Green</label>
+                                    </div>
+                                </div>
+                            </section>
+                            <hr />
+                            <section class="row">
+                                <div class="col-12">
+                                    <h4>Background Animation</h4>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <label class="form-check-label" for="bg-animation">Background Animations:</label>
+                                        <input id="bg-animation" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
+                                    </div>
+                                </div>
+                            </section>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </main>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var accent = $('body').attr('accent');
+            $(`#${accent}`).attr('checked', true);
+            var bubbles = localStorage.getItem('bg-animation');
+            if (bubbles === 'true') {
+                $('#bg-animation').attr('checked', true);
+            }
+        });
+        $(document).on("click", "#pink", function () {
+            $('body').attr('accent', 'pink');
+            localStorage.setItem('accent', 'pink');
+        });
+        $(document).on("click", "#blue", function () {
+            $('body').attr('accent', 'blue');
+            localStorage.setItem('accent', 'blue');
+        });
+        $(document).on("click", "#green", function () {
+            $('body').attr('accent', 'green');
+            localStorage.setItem('accent', 'green');
+        });
+        $(document).on('click', '#bg-animation', function () {
+            if ($(this).is(':checked')) {
+                localStorage.setItem('bg-animation', 'true');
+            }
+            else {
+                localStorage.setItem('bg-animation', 'false');
+            }
+        });
+    </script>
+}
