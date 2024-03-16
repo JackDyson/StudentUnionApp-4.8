@@ -13,7 +13,7 @@ namespace StudentUnionApp.Controllers
 {
     public class HomeController : Controller
     {
-        StudentUnionContext _context = new StudentUnionContext();
+        DatabaseContext _context = new DatabaseContext();
 
         #region Views 
 

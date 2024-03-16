@@ -20,6 +20,11 @@
             $('body').attr('accent', 'green');
         }
     }
+
+    var animation = localStorage.getItem('bg-animation');
+    if (!animation) {
+        localStorage.setItem('bg-animation', 'true');
+    }
 }();
 $(document).on("click", '#theme', function () {
     if ($('#theme').hasClass('uil-sunset')) {
