@@ -11,7 +11,7 @@ body[theme="dark"] {
 thead {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: calc(1rem + var(--nav-height));
+    top: calc(4rem + var(--nav-height));
     z-index: 1;
     font-size: 0.8rem;
 }
@@ -77,4 +77,21 @@ table.dataTable tbody tr {
 }
 .datatable-header-container > *:last-child {
     margin-right: 0;
+}
+
+@media screen and (max-width: 1200px), screen and (max-device-width: 1200px) {
+
+    table.dataTable tbody tr td {
+        background-color: var(--table-bg);
+        cursor: pointer;
+    }
+
+    thead {
+        position: initial;
+    }
+
+}
+
+.dt-header-row .btn {
+    width: 95px;
 }

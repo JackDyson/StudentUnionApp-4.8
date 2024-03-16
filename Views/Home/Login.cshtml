@@ -7,44 +7,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <title>@ViewBag.Title - Huddersfield Students' Union</title>
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/Site.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LinetoCircular:wght@900&display=swap">
-    <link rel="stylesheet" href="~/Content/css/global.css?release=@newGuid" />
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="~/Content/dataTables/datatables.min.css" />
+    <link rel="stylesheet" href="~/Content/css/global.css?release=@Guid.NewGuid()">
+    <link rel="stylesheet" href="~/Content/dataTables/custom-datatables.css?release=@Guid.NewGuid()" />
 </head>
-<body>
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-        <div class="card mx-auto" style="width: 300px">
-            <div class="card-body">
-                <h2 class="text-center">Login</h2>
-                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
+<body theme="light" accent="pink">
+    <div class="container body-content">
+        <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+            <div class="card mx-auto" style="width: 300px">
+                <div class="card-body">
+                    <h2 class="text-center">Login</h2>
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
 
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
-                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
 
-                    <div class="text-center">
-                        <input type="submit" value="Login" class="btn btn-primary mt-4" />
-                    </div>
-                }
+                        <div class="text-center">
+                            <input type="submit" value="Login" class="btn btn-primary mt-4" />
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @Html.Raw("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js'></script>")
+    <script src="~/Scripts/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/global.js?release=@Guid.NewGuid()"></script>
+
+
 </body>
 </html>
-<script src="~/Scripts/jquery-3.7.1.min.js"></script>
-<script src="~/Scripts/global.js?release=@Guid.NewGuid()"></script>
-

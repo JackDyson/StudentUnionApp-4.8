@@ -118,6 +118,7 @@ input.form-control {
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     border-radius: 20px;
+    color: #000000 !important;
 }
 
 h1, h2, h3, h4, h5, h6, label, th {
@@ -175,7 +176,7 @@ nav i {
 .sticky {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: calc(1rem + var(--nav-height));
+    top: calc(0.5rem + var(--nav-height));
     z-index: 1;
 }
 

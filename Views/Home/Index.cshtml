@@ -7,16 +7,19 @@
         <section class="col-md-12" aria-labelledby="gettingStartedTitle">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="datatable-header-container sticky">
-                                <button id="filter" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#filterOffCanvas" aria-controls="filterOffCanvas">Filter</button>
-                                <button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
-                                <button id="edit" class="btn btn-primary">Edit</button>
-                                <input type="search" id="search" class="form-control" placeholder="Search" />
-                                <button id="export" class="btn btn-primary">Export</button>
-                                <button id="sendEmail" class="btn btn-primary">Email</button>
-                            </div>
+                    <div class="row sticky dt-header-row" style="background-color: var(--card-bg)">
+                        <div class="col-md-4 d-flex justify-content-between mt-2 mb-2">
+                            <button id="filter" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#filterOffCanvas" aria-controls="filterOffCanvas">Filter</button>
+                            <button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
+                            <button id="edit" class="btn btn-primary">Edit</button>
+                        </div>
+                        <div class="col-md-4 mt-2 mb-2">
+                            <input type="text" id="search" class="form-control" placeholder="Search" />
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-between mt-2 mb-2">
+                            <button id="export" class="btn btn-primary">Export</button>
+                            <button id="upload" class="btn btn-primary">Upload</button>
+                            <button id="sendEmail" class="btn btn-primary">Email</button>
                         </div>
                     </div>
                     <div class="row">
@@ -264,8 +267,9 @@
                     { "title": "Training", "targets": 10 },
                     { "title": "Membership", "targets": 11 },
                     { "title": "Food", "targets": 12 },
+                    { "title": "Students", "targets": 13 },
                     { "className": "text-center", "targets": [9, 10, 11, 12] },
-                    { "visible": false, "targets": [1, 2, 4, 5, 7, 8] }
+                    { "visible": false, "targets": getColumnsToHide() }
                 ],
                 "columns": [ // Define columns and map them to data source properties
                     {
@@ -320,6 +324,59 @@
                             return convToIcon(data);
                         }
                     },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label>Club: </label>
+                                                    <text >${row.Club_Name}</text>
+                                                </div>
+                                                <div class="col-6" style="text-align: end">
+                                                    <label style="position: relative; bottom: 8px">Agreement: </label>
+                                                    <text  style="position: relative; bottom: 5px">${convToIcon(row.Agreement_Signed)}</text>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label>Position: </label>
+                                                    <text>${row.Position}</text>
+                                                </div>
+                                                <div class="col-6" style="text-align: end">
+                                                    <label style="position: relative; bottom: 8px">Training: </label>
+                                                    <text  style="position: relative; bottom: 5px">${convToIcon(row.Training_Complete)}</text>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label>Name: </label>
+                                                    <text>${row.Student_Name}</text>
+                                                </div>
+                                                <div class="col-6" style="text-align: end">
+                                                    <label style="position: relative; bottom: 8px">Membership: </label>
+                                                    <text  style="position: relative; bottom: 5px">${convToIcon(row.Membership_Purchased)}</text>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label>Phone: </label>
+                                                    <text >${row.Phone_Number}</text>
+                                                </div>
+                                                <div class="col-6" style="text-align: end">
+                                                    <label style="position: relative; bottom: 8px">Food: </label>
+                                                    <text  style="position: relative; bottom: 5px">${convToIcon(row.Food_Certified)}</text>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label>Email: </label>
+                                                    <text>${row.Email_Address}</text>
+                                                </div>
+                                        </div>`
+                        }
+                    }
                 ]
             });
         });
@@ -332,7 +389,7 @@
             table.button('.buttons-excel').trigger();
         });
 
-        $(document).on("keyup", "#search", function () {
+        $(document).on("keyup change", "#search", function () {
             table.search($(this).val()).draw();
         });
 
@@ -366,6 +423,16 @@
 
         function convToIcon(data) {
             return data === true ? '<i class="uis uis-check-circle"></i>' : '<i class="uis uis-times-circle"></i>';
+        }
+
+        // Returns a list of columns to hide based on the width of the screen
+        function getColumnsToHide() {
+            if ($(window).width() < 1200) {
+                return [0,1,2,3,4,5,6,7,8,9,10,11,12];
+            }
+            else {
+                return [1, 2, 4, 5, 7, 8, 13];
+            }
         }
     </script>
 }
