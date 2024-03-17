@@ -72,6 +72,41 @@ namespace StudentUnionApp
             }
         }
 
+        /// <summary>
+        ///     Send a feedback email to the support team (me)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <param name="message"></param>
+        public void FeedbackEmail(string name, string email, string message)
+        {
+            try
+            {
+                MailAddress to = new MailAddress("jack.c.dyson@gmail.com");
+                MailAddress from = new MailAddress("info@sutest.co.uk");
+                MailMessage mail = new MailMessage(from, to)
+                {
+                    Subject = $"Feedback from {name}",
+                    IsBodyHtml = true,
+                    Body = $"Name: {name} <br> Email: {email} <br> Message: {message} <br>"
+                };
+                _Smtp.Send(mail);
+                
+                // Send a confirmation email to the user
+                MailAddress toUser = new MailAddress(email);
+                MailMessage mailUser = new MailMessage(from, toUser)
+                {
+                    Subject = $"Feedback Confirmation",
+                    IsBodyHtml = true,
+                    Body = $"Thank you for your feedback. We will be in touch soon. <br>"
+                };
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+            }
+        }
+
         #region Misc
 
 

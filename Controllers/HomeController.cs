@@ -31,14 +31,6 @@ namespace StudentUnionApp.Controllers
             return View();
         }
 
-        [Authorize]
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Contact";
-
-            return View();
-        }
-
         #endregion
 
         #region Login/out
@@ -62,6 +54,21 @@ namespace StudentUnionApp.Controllers
                 if (isValidUser)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, false);
+                    // Retrieve the URL referrer
+                    Uri referrer = Request.UrlReferrer;
+
+                    // Check if there is a referrer and it contains the ReturnUrl parameter
+                    if (referrer != null && !string.IsNullOrEmpty(referrer.Query))
+                    {
+                        string returnUrl = HttpUtility.ParseQueryString(referrer.Query)["ReturnUrl"];
+
+                        if (!string.IsNullOrEmpty(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                    }
+
+                    // If the referrer is null or doesn't contain a ReturnUrl, redirect to the home page
                     return RedirectToAction("Index", "Home"); // Redirects to the Index action in HomeController
                 }
                 else
