@@ -91,19 +91,27 @@ namespace StudentUnionApp
                     Body = $"Name: {name} <br> Email: {email} <br> Message: {message} <br>"
                 };
                 _Smtp.Send(mail);
-                
-                // Send a confirmation email to the user
-                MailAddress toUser = new MailAddress(email);
-                MailMessage mailUser = new MailMessage(from, toUser)
+
+                try
                 {
-                    Subject = $"Feedback Confirmation",
-                    IsBodyHtml = true,
-                    Body = $"Thank you for your feedback. We will be in touch soon. <br>"
-                };
+                    // Send a confirmation email to the user
+                    MailAddress toUser = new MailAddress(email);
+                    MailMessage mailUser = new MailMessage(from, toUser)
+                    {
+                        Subject = $"Feedback Confirmation",
+                        IsBodyHtml = true,
+                        Body = $"Thank you for your feedback. We will be in touch soon. <br>"
+                    };
+                }
+                catch (Exception ex)
+                {
+                    _Context.AddErrorLog("MailSender", "FeedbackEmail", $"Sending to person who submitted feedback: {ex.InnerException.Message}");
+                }
+
             }
             catch (Exception ex)
             {
-                // Handle exception
+                _Context.AddErrorLog("MailSender", "FeedbackEmail", $"Sending to jack.c.dyson: {ex.InnerException.Message}");
             }
         }
 
