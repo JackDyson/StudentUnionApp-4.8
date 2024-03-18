@@ -72,9 +72,20 @@ $(document).on("click", '#logout', function () {
     })
 });
 
+// Navigate back when back button is clicked
+$(document).on("click", '#back', function () {
+    window.history.back();
+});
+
+// Navigate forward when forward button is clicked
+$(document).on("click", '#forward', function () {
+    window.history.forward();
+});
+
 
 // function to replace \n with <br> within a string
 function nl2br(str, is_xhtml) {
     var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
+

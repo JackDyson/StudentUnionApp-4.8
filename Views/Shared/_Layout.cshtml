@@ -21,8 +21,20 @@
 <body theme="light" accent="pink">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
         <div class="container">
-            @Html.ActionLink("HSU Admin", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <div class="navbar-collapse d-sm-inline-flex justify-content-between">
+            <div class="d-flex justify-content-between w-100">
+                <div class="d-inline-flex">
+                    <i id="back" class="uil uil-arrow-left"></i>
+                    <i id="forward" class="uil uil-arrow-right" style="margin-left: 1.25rem"></i>
+                </div>
+                <div>
+                    @Html.ActionLink("HSU Admin", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="d-inline-flex">
+                    <i id="theme" class="uil uil-sunset"></i>
+                    <i id="logout" class="uis uis-signout" style="margin-left: 1.25rem"></i>
+                </div>
+            </div>
+            @*<div class="navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Feedback", "Index", "Feedback", new { area = "" }, new { @class = "nav-link" })</li>
@@ -30,7 +42,7 @@
                 </ul>
                 <i id="theme" class="uil uil-sunset"></i>
                 <i id="logout" class="uis uis-signout" style="margin-left: 1.25rem"></i>
-            </div>
+            </div>*@
         </div>
     </nav>
     <div class="container body-content">
