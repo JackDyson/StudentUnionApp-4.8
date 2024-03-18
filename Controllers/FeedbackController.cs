@@ -19,7 +19,7 @@ namespace StudentUnionApp.Controllers
         public void SendFeedback(string name, string email, string message)
         {
             MailSender mailSender = new MailSender();
-            mailSender.FeedbackEmail(name, email, message);
+            mailSender.FeedbackEmail(name, email, StringHelper.ReplaceNewLineWithBr(message));
         }
     }
 }

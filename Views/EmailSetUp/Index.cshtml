@@ -8,7 +8,21 @@
         <section class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h1>Coming Soon</h1>
+                    <div class="row sticky dt-header-row" style="background-color: var(--card-bg)">
+                        <div class="col-md-4 d-flex justify-content-between mt-2 mb-2">
+                            <button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
+                            <button id="edit" class="btn btn-primary">Edit</button>
+                        </div>
+                        <div class="col-md-8 mt-2 mb-2">
+                            <input type="text" id="search" class="form-control" placeholder="Search" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <table id="email-table" class="w-100 dataTable nowrap">
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

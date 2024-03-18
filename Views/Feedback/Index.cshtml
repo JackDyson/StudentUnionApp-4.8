@@ -51,7 +51,7 @@
                 data: {
                     name: $('#name').val(),
                     email: $('#email').val(),
-                    message: nl2br($('#feedback').val())
+                    message: $('#feedback').val()
                 },
                 success: function (data) {
                     alert('Feedback submitted successfully');
