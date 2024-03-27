@@ -93,5 +93,5 @@ table.dataTable tbody tr {
 }
 
 .dt-header-row .btn {
-    width: 95px;
+    min-width: 95px;
 }

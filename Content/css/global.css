@@ -110,11 +110,11 @@ body {
         border-color: var(--accent2) !important;
         background-color: var(--accent1);
     }
-    input[type="text"].form-control:focus, input[type="search"].form-control:focus {
+    input[type="text"].form-control:focus, input[type="search"].form-control:focus, textarea.form-control:focus {
         background-color: #fff;
     }
 
-input.form-control, textarea {
+input.form-control, textarea.form-control {
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     border-radius: 20px;
@@ -159,6 +159,10 @@ nav i {
     font-size: 20px;
 }
 
+nav i:hover {
+    color: #000000;
+}
+
 .navbar-expand-sm .navbar-nav, .navbar-collapse {
     display: flex;
     -ms-flex-direction: row;
@@ -188,7 +192,7 @@ nav i {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* The track (progress background) */
+    background: #00000000; /* The track (progress background) */
     border-radius: 10px; /* Adds rounded corners to the track */
 }
 

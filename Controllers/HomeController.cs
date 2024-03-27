@@ -96,13 +96,16 @@ namespace StudentUnionApp.Controllers
             {
                 return true;
             }
-            // This method should return true if credentials are valid, false otherwise
+            // This method returns true if credentials are valid, false otherwise
             var staff = _context.Staff.ToList();
             foreach (var s in staff)
             {
-                if (s.Email == email && s.Password == password)
+                if (s.Email == email)
                 {
-                    return true;
+                    if (PasswordHelper.VerifyPassword(password, s.Password))
+                    {
+                        return true;
+                    }                    
                 }
             }
             return false;
@@ -117,7 +120,7 @@ namespace StudentUnionApp.Controllers
         {
             try
             {
-                return Json(_context.Student_Union_Test.ToList().OrderBy(d => d.Club_Name), JsonRequestBehavior.AllowGet);
+                return Json(_context.Students.ToList().OrderBy(d => d.Club_Name), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -126,11 +129,11 @@ namespace StudentUnionApp.Controllers
         }
 
         [Authorize]
-        public ActionResult AddEntryToSUTest(Student_Union_Test newEntry)
+        public ActionResult AddEntryToSUTest(Students newEntry)
         {
             try
             {
-                _context.Student_Union_Test.Add(newEntry);
+                _context.Students.Add(newEntry);
                 _context.SaveChanges();
                 return Json(new { success = true, responseText = "Entry added successfully" }, JsonRequestBehavior.AllowGet);
             }
@@ -141,9 +144,9 @@ namespace StudentUnionApp.Controllers
         }
 
         [Authorize]
-        public ActionResult UpdateEntrySUTest(Student_Union_Test entry)
+        public ActionResult UpdateEntrySUTest(Students entry)
         {
-            var entryToUpdate = _context.Student_Union_Test.Find(entry.Student_ID);
+            var entryToUpdate = _context.Students.Find(entry.Student_ID);
             if (entryToUpdate == null)
             {
                 return Json(new { success = false, responseText = "Entry not found" }, JsonRequestBehavior.AllowGet);

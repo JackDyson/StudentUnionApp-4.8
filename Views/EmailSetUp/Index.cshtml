@@ -9,17 +9,16 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row sticky dt-header-row" style="background-color: var(--card-bg)">
-                        <div class="col-md-4 d-flex justify-content-between mt-2 mb-2">
-                            <button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
-                            <button id="edit" class="btn btn-primary">Edit</button>
-                        </div>
-                        <div class="col-md-8 mt-2 mb-2">
+                        <div class="col-md-10 mt-2 mb-2">
                             <input type="text" id="search" class="form-control" placeholder="Search" />
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-between mt-2 mb-2">
+                            <button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <table id="email-table" class="w-100 dataTable nowrap">
+                            <table id="email-table" class="w-100 dataTable">
                             </table>
                         </div>
                     </div>
@@ -29,6 +28,207 @@
     </div>
 </main>
 
-@section scripts {
+<!-- Edit Modal -->
+<div class="modal modal-lg fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Email Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label" for="title">Title</label>
+                            <input class="form-control" id="title" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label" for="subject">Subject</label>
+                            <input class="form-control" id="subject" type="text">
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                            <label class="form-check-label" for="food">Email Body:</label>
+                            <textarea class="form-control" id="content" name="content" placeholder="Enter the content of the email here" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="delete" type="button" class="btn btn-primary">Delete</button>
+                <button id="saveEditModal" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section scripts {
+    <script>
+        var emailTable;
+        $(document).ready(function () {
+            buildEmailTable();
+        });
+
+        // Build the email datatable
+        function buildEmailTable() {
+            emailTable = $('#email-table').DataTable({
+                "ajax": {
+                    "url": "/EmailSetUp/GetEmailTemplates",
+                    "dataSrc": "", // Assuming the returned data is an array at the root level
+                    "type": "GET", // Method type
+                    "dataType": 'json' // Data type expected from the server
+                },
+                "dom": 't', // Add the buttons to the DOM
+                "serverSide": false, // Server-side processing
+                "order": [[0, "asc"]], // Initial sorting column
+                "paging": false, // Enable paging
+                "searching": true, // Enable searching
+                "columnDefs": [
+                    { "title": "Title", targets: 0 },
+                    { "title": "Subject", "targets": 1 },
+                    { "title": "Body", "targets": 2 },
+                    { "title": "Email Templates", "targets": 3 },
+                    { "title": "Actions", "targets": 4 },
+                    { "visible": false, "targets": [0, 1, 2] },
+                    { "orderable": false, "targets": 4 }
+                ],
+                "columns": [
+                    { data: "Title" },
+                    { data: "Subject" },
+                    { data: "Email_Content" },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return `<div class="row">
+                                        <div class="col-6 text-center">
+                                            <label style="position: relative; right: 5px">Title: </label>
+                                            <text>${row.Title}</text>
+                                        </div>
+                                        <div class="col-6 text-center">
+                                            <label style="position: relative; right: 5px">Subject: </label>
+                                            <text>${row.Subject}</text>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-12"><textarea class="form-control" disabled rows="6">${row.Email_Content}</textarea></div>
+                                    </div>`;
+                        }
+                    },
+                    {
+                        data: "ID",
+                        render: function (data, type, row, meta) {
+                            return `<div><button id="edit-${data}" class="btn btn-primary">Edit</button></div>`
+                        },
+                        width: "50px"
+                    },
+                ],
+                "language": {
+                    "emptyTable": "No data found"
+                }
+            });
+        }
+
+        // Search the table
+        $(document).on('keyup', '#search', function () {
+            emailTable.search($(this).val()).draw();
+        });
+
+        // open the edit modal when any button with id starting with edit- is clicked
+        var idToEdit = null;
+        $(document).on('click', 'button[id^="edit-"]', function (e) {
+            $('#addModal').attr('id', 'editModal');
+            $('#saveAddModal').attr('id', 'saveEditModal');
+            idToEdit = $(this).attr('id').split('-')[1];
+            $(e.target).closest('tr');
+            var data = emailTable.row($(e.target).closest('tr')).data();
+            $('#title').val(data.Title);
+            $('#subject').val(data.Subject);
+            $('#content').val(data.Email_Content);
+
+            $('#editModal').modal('show');
+        });
+
+        // Save the changes made in the edit modal
+        $(document).on('click', '#saveEditModal', function () {
+            var title = $('#title').val();
+            var subject = $('#subject').val();
+            var content = $('#content').val();
+
+            $.ajax({
+                url: '/EmailSetUp/UpdateEmailTemplate',
+                type: 'POST',
+                data: {
+                    id: idToEdit,
+                    title: title,
+                    subject: subject,
+                    content: content
+                },
+                success: function (data) {
+                    $('#editModal').modal('hide');
+                    emailTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            idToEdit = null;
+        });
+
+        // Add new email template
+        $(document).on('click', '#add', function () {
+            $('#editModal').attr('id', 'addModal');
+            $('#saveEditModal').attr('id', 'saveAddModal');
+            $('#title').val('');
+            $('#subject').val('');
+            $('#content').val('');
+            $('#addModal').modal('show');
+        });
+
+        // Save the new email template
+        $(document).on('click', '#saveAddModal', function () {
+            var title = $('#title').val();
+            var subject = $('#subject').val();
+            var content = $('#content').val();
+
+            $.ajax({
+                url: '/EmailSetUp/AddEmailTemplate',
+                type: 'POST',
+                data: {
+                    title: title,
+                    subject: subject,
+                    content: content
+                },
+                success: function (data) {
+                    $('#addModal').modal('hide');
+                    emailTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // Delete the email template
+        $(document).on('click', '#delete', function () {
+            $.ajax({
+                url: '/EmailSetUp/DeleteEmailTemplate',
+                type: 'POST',
+                data: {
+                    id: idToEdit
+                },
+                success: function (data) {
+                    $('#editModal').modal('hide');
+                    emailTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            idToEdit = null;
+        });
+    </script>
 }

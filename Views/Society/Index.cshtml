@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Societies";
+    ViewBag.Title = "Society Set Up";
 }
 
 
@@ -8,13 +8,282 @@
         <section class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h1>Coming Soon</h1>
+                    <div class="row sticky dt-header-row mt-2 mb-3" style="background-color: var(--card-bg)">
+                        <div class="col-lg-12 d-flex justify-content-between ">
+                            <button id="add-society" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSocietyModal">Add Society</button>
+                            <input type="text" id="search-society" class="form-control" placeholder="Search for a society" style="width: 65%" />
+                            <button id="add-position" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPositionModal">Add Position</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <table id="society-table" class="w-100 dataTable">
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table id="position-table" class="w-100 dataTable">
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 </main>
 
-@section scripts {
+<!-- Add Society Modal -->
+<div class="modal modal-lg fade" id="addSocietyModal" tabindex="-1" aria-labelledby="addSocietyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSocietyModalLabel">Create a New Society</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="control-label" for="society-name">Society Name</label>
+                            <input class="form-control" id="society-name" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveAddSocietyModal" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Add Position Modal -->
+<div class="modal modal-lg fade" id="addPositionModal" tabindex="-1" aria-labelledby="addPositionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPositionModalLabel">Create a New Position</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="control-label" for="position-name">Position Name</label>
+                            <input class="form-control" id="position-name" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveAddPositionModal" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var societyTable;
+        var positionTable;
+        $(document).ready(function () {
+            buildSocietyTable();
+            buildPositionTable();
+        });
+
+        // Build the Society datatable
+        function buildSocietyTable() {
+            societyTable = $('#society-table').DataTable({
+                "ajax": {
+                    "url": "/Society/GetSocieties",
+                    "dataSrc": "", // Assuming the returned data is an array at the root level
+                    "type": "GET", // Method type
+                    "dataType": 'json' // Data type expected from the server
+                },
+                "dom": 't', // Add the buttons to the DOM
+                "serverSide": false, // Server-side processing
+                "order": [[0, "asc"]], // Initial sorting column
+                "paging": false, // Enable paging
+                "searching": true, // Enable searching
+                "columnDefs": [
+                    { "title": "Societies", targets: 0 },
+                    { "title": "Actions", targets: 1 },
+                    { "orderable": false, targets: 1 }
+                ],
+                "columns": [
+                    { data: "Society_Name" },
+                    {
+                        data: "ID",
+                        render: function (data, type, row, meta) {
+                            return '<button id="delete-society-' + data + '" class="btn btn-primary">Delete</button>';
+                        },
+                        width: "75px"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No data found"
+                }
+            });
+        }
+
+        // build position table
+        function buildPositionTable() {
+            positionTable = $('#position-table').DataTable({
+                "ajax": {
+                    "url": "/Society/GetPositions",
+                    "dataSrc": "", // Assuming the returned data is an array at the root level
+                    "type": "GET", // Method type
+                    "dataType": 'json' // Data type expected from the server
+                },
+                "dom": 't', // Add the buttons to the DOM
+                "serverSide": false, // Server-side processing
+                "order": [[0, "asc"]], // Initial sorting column
+                "paging": false, // Enable paging
+                "searching": true, // Enable searching
+                "columnDefs": [
+                    { "title": "Position", targets: 0 },
+                    { "title": "Actions", targets: 1 },
+                    { "orderable": false, targets: 1 }
+                ],
+                "columns": [
+                    { data: "Position_Name" },
+                    {
+                        data: "ID",
+                        render: function (data, type, row) {
+                            return '<button id="delete-position-' + data + '" class="btn btn-primary">Delete</button>';
+                        },
+                        width: "75px"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No data found"
+                }
+            });
+        }
+
+        // search the societies table
+        $(document).on('keyup', '#search-society', function () {
+            societyTable.search($(this).val()).draw();
+        });
+
+        // open the add society modal
+        $(document).on('click', '#add-society', function () {
+            $('#addSocietyModal').modal('show');
+            // clear the input field
+            $('#society-name').val('');
+        });
+
+        // save the society
+        $(document).on('click', '#saveAddSocietyModal', function () {
+            var society = {
+                Society_Name: $('#society-name').val()
+            };
+
+            // if the society name is empty, return
+            if (society.Society_Name === '') {
+                return;
+            }
+
+            // if the society name already exists, return
+            var societies = societyTable.rows().data();
+            for (var i = 0; i < societies.length; i++) {
+                if (societies[i].Society_Name === society.Society_Name) {
+                    alert('Society already exists');
+                    return;
+                }
+            }
+
+            $.ajax({
+                url: '/Society/AddSociety',
+                type: 'POST',
+                data: JSON.stringify(society),
+                contentType: 'application/json',
+                success: function (data) {
+                    $('#addSocietyModal').modal('hide');
+                    societyTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // delete society
+        $(document).on('click', 'button[id^="delete-society-"]', function () {
+            var id = $(this).attr('id').split('-')[2];
+            $.ajax({
+                url: '/Society/DeleteSociety/',
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    societyTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // open the add position modal
+        $(document).on('click', '#add-position', function () {
+            $('#addPositionModal').modal('show');
+            // clear the input field
+            $('#position-name').val('');
+        });
+
+        // save the position
+        $(document).on('click', '#saveAddPositionModal', function () {
+            var position = {
+                Position_Name: $('#position-name').val()
+            };
+
+            // if the position name is empty, return
+            if (position.Position_Name === '') {
+                return;
+            }
+
+            // if the position name already exists, return
+            var positions = positionTable.rows().data();
+            for (var i = 0; i < positions.length; i++) {
+                if (positions[i].Position_Name === position.Position_Name) {
+                    alert('Position already exists');
+                    return;
+                }
+            }
+
+            $.ajax({
+                url: '/Society/AddPosition',
+                type: 'POST',
+                data: JSON.stringify(position),
+                contentType: 'application/json',
+                success: function (data) {
+                    $('#addPositionModal').modal('hide');
+                    positionTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // delete position
+        $(document).on('click', 'button[id^="delete-position-"]', function () {
+            var id = $(this).attr('id').split('-')[2];
+            $.ajax({
+                url: '/Society/DeletePosition/',
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    positionTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+    </script>
 }

@@ -48,31 +48,6 @@ namespace StudentUnionApp
         #region Emails
 
         /// <summary>
-        ///     Sends an email informing us that the service has started
-        /// </summary>
-        /// <param name="version">Service version number</param>
-        public void StartUpEmail(string version)
-        {
-            try
-            {
-                MailAddress to = new MailAddress("jack.dyson@Abzorb.co.uk");
-                MailAddress from = new MailAddress("info@sutest.co.uk");
-                MailMessage mail = new MailMessage(from, to)
-                {
-                    Subject = $"Started Cron Service - v{version}",
-                    IsBodyHtml = true,
-                    Body = $"Successfully started Cron Service {Environment.NewLine} {EmailFooter("Automation Service")}"
-                };
-                mail.IsBodyHtml = true;
-                _Smtp.Send(mail);
-            }
-            catch (Exception ex)
-            {
-                _Context.ConnectToApi(ex.InnerException.StackTrace);
-            }
-        }
-
-        /// <summary>
         ///     Send a feedback email to the support team (me)
         /// </summary>
         /// <param name="name"></param>

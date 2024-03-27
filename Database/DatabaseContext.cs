@@ -26,9 +26,12 @@ public class DatabaseContext : DbContext
     #endregion
 
 
-    public DbSet<Student_Union_Test> Student_Union_Test { get; set; }
+    public DbSet<Students> Students { get; set; }
     public DbSet<Staff> Staff { get; set; }
+    public DbSet<Email_Templates> Email_Templates { get; set; }
     public DbSet<ErrorLog> ErrorLog { get; set; }
+    public DbSet<Societies> Societies { get; set; }
+    public DbSet<Positions> Positions { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
@@ -36,6 +39,294 @@ public class DatabaseContext : DbContext
     }
 
     #region SQL Queries
+
+    #region Students
+
+    // returns all students
+    public List<Students> GetStudents()
+    {
+        return Students.ToList();
+    }
+
+    // adds a new student
+    public void AddStudent(string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
+    {
+        try
+        {
+            Students student = new Students()
+            {
+                Club_Name = clubName,
+                Position = position,
+                Student_Name = studentName,
+                Preferred_Name = preferredName,
+                Phone_Number = phoneNumber,
+                Email_Address = emailAddress,
+                Agreement_Signed = agreementSigned,
+                Training_Complete = trainingComplete,
+                Membership_Purchased = membershipPurchased,
+                Food_Certified = foodCertified
+            };
+            Students.Add(student);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "AddStudent", ex.Message);
+        }
+    }
+
+    // updates a student
+    public void UpdateStudent(int id, string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
+    {
+        try
+        {
+            Students student = Students.Find(id);
+            student.Club_Name = clubName;
+            student.Position = position;
+            student.Student_Name = studentName;
+            student.Preferred_Name = preferredName;
+            student.Phone_Number = phoneNumber;
+            student.Email_Address = emailAddress;
+            student.Agreement_Signed = agreementSigned;
+            student.Training_Complete = trainingComplete;
+            student.Membership_Purchased = membershipPurchased;
+            student.Food_Certified = foodCertified;
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "UpdateStudent", ex.Message);
+        }
+    }
+
+    // deletes a student
+    public void DeleteStudent(int id)
+    {
+        try
+        {
+            Students student = Students.Find(id);
+            Students.Remove(student);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "DeleteStudent", ex.Message);
+        }
+    }
+
+    #endregion
+
+    #region Staff
+
+    // returns all staff
+    public List<Staff> GetStaff()
+    {
+        return Staff.ToList();
+    }
+
+    // adds a new staff member
+    public void AddStaff(string name, string email, string password, string role)
+    {
+        try
+        {
+            Staff staff = new Staff()
+            {
+                Name = name,
+                Email = email,
+                Password = password,
+                Role = role
+            };
+            Staff.Add(staff);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "AddStaff", ex.Message);
+        }
+    }
+
+    // updates a staff member
+    public void UpdateStaff(int id, string name, string email, string password, string role)
+    {
+        try
+        {
+            Staff staff = Staff.Find(id);
+            staff.Name = name;
+            staff.Email = email;
+            staff.Password = password;
+            staff.Role = role;
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "UpdateStaff", ex.Message);
+        }
+    }
+
+    // deletes a staff member
+    public void DeleteStaff(int id)
+    {
+        try
+        {
+            Staff staff = Staff.Find(id);
+            Staff.Remove(staff);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "DeleteStaff", ex.Message);
+        }
+    }
+
+    #endregion
+
+    #region Societies
+
+    // returns all societies
+    public List<Societies> GetSocieties()
+    {
+        return Societies.ToList();
+    }
+
+    // adds a new society
+    public void AddSociety(string societyName)
+    {
+        try
+        {
+            Societies society = new Societies()
+            {
+                Society_Name = societyName
+            };
+            Societies.Add(society);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "AddSociety", ex.Message);
+        }
+    }
+
+    // deletes a society
+    public void DeleteSociety(int id)
+    {
+        try
+        {
+            Societies society = Societies.Find(id);
+            Societies.Remove(society);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "DeleteSociety", ex.Message);
+        }
+    }
+
+    #endregion
+
+    #region Positions
+
+    // returns all positions
+    public List<Positions> GetPositions()
+    {
+        return Positions.ToList();
+    }
+
+    // adds a new position
+    public void AddPosition(string positionName)
+    {
+        try
+        {
+            Positions position = new Positions()
+            {
+                Position_Name = positionName
+            };
+            Positions.Add(position);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "AddPosition", ex.Message);
+        }
+    }
+
+    // deletes a position
+    public void DeletePosition(int id)
+    {
+        try
+        {
+            Positions position = Positions.Find(id);
+            Positions.Remove(position);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "DeletePosition", ex.Message);
+        }
+    }
+
+    #endregion
+
+    #region Email Templates
+
+    //returns all email templates
+    public List<Email_Templates> GetEmailTemplates() 
+    { 
+        return Email_Templates.ToList();
+    }
+
+    // adds a new email template
+    public void AddEmailTemplate(string title, string subject, string content)
+    {
+        try
+        {
+            Email_Templates template = new Email_Templates()
+            {
+                Title = title,
+                Subject = subject,
+                Email_Content = content
+            };
+            Email_Templates.Add(template);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "AddEmailTemplate", ex.Message);
+        }
+    }
+
+    // updates an email template
+    public void UpdateEmailTemplate(int id, string title, string subject, string content)
+    {
+        try
+        {
+            Email_Templates template = Email_Templates.Find(id);
+            template.Title = title;
+            template.Subject = subject;
+            template.Email_Content = content;
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "UpdateEmailTemplate", ex.Message);
+        }
+    }
+
+    // deletes an email template
+    public void DeleteEmailTemplate(int id)
+    {
+        try
+        {
+            Email_Templates template = Email_Templates.Find(id);
+            Email_Templates.Remove(template);
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "DeleteEmailTemplate", ex.Message);
+        }
+    }
+
+    #endregion
 
     #region Error Log
 
@@ -55,35 +346,12 @@ public class DatabaseContext : DbContext
                 ControllerName = controller,
                 ControllerMethod = methodName,
                 ErrorMessage = error,
-                Username = username
+                Username = "Jack"
             };
             ErrorLog.Add(errorLog);
             SaveChanges();
         }
-        catch (Exception ex)
-        {
-            ConnectToApi(ex.InnerException.Message);
-        }
-    }
-
-    public void ConnectToApi(string innerException)
-    {
-        //try
-        //{
-        //    var client = new RestClient("https://abzorbapi.click2sign.co.uk:8075/api/");
-        //    // Only run proxy logic on live code
-        //    #if (!DEBUG)
-        //    // Proxy logic to cater for idiots at IONOS
-        //    client.Proxy = new System.Net.WebProxy("winproxy.server.lan", 3128);
-        //    #endif
-        //    // Set request type
-        //    var request = new RestRequest($"Monitor/CheckApiStatusTwo?errorMessage={innerException}", Method.GET);
-        //    // Add Authorization Header to request
-        //    request.AddHeader("Authorization", "Basic YXdhaXMuaHVzc2FpbkBhYnpvcmIuY28udWs6S2Fscnk5NTQ/");
-        //    // Return API response
-        //    IRestResponse response = client.Execute(request);
-        //}
-        //catch (Exception e) { }
+        catch (Exception ex) { }
     }
 
     #endregion
@@ -91,8 +359,10 @@ public class DatabaseContext : DbContext
     #endregion
 }
 
-[Table("Student_Union_Test")]
-public class Student_Union_Test
+# region Tables
+
+[Table("Students")]
+public class Students
 {
     [Key]
     public int Student_ID { get; set; }
@@ -124,7 +394,7 @@ public class Staff
 public class ErrorLog
 {
     [Key]
-    public long ErrorLogID { get; set; }
+    public int ErrorLogID { get; set; }
     public string ControllerName { get; set; }
     public string ControllerMethod { get; set; }
     public string ErrorMessage { get; set; }
@@ -134,3 +404,32 @@ public class ErrorLog
     public DateTime UpdatedTime { get; set; } = DateTime.Now;
     public string UpdatedBy { get; set; } = "SU Site";
 }
+
+[Table("Email_Templates")]
+public class Email_Templates
+{
+    [Key]
+    public int ID { get; set;}
+    public string Title { get; set; }
+    public string Subject { get; set; }
+    public string Email_Content { get; set; }
+}
+
+[Table("Societies")]
+public class Societies
+{
+    [Key]
+    public int ID { get; set; }
+    public string Society_Name { get; set; }
+
+}
+
+[Table("Society_Positions")]
+public class Positions
+{
+    [Key]
+    public int ID { get; set; }
+    public string Position_Name { get; set; }
+}
+
+#endregion
