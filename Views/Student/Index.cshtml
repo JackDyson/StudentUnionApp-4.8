@@ -34,6 +34,7 @@
     </div>
 </main>
 
+<!-- Filters -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffCanvas" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
@@ -41,22 +42,110 @@
     </div>
     <div class="offcanvas-body">
         <div>
-            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+            Select the filters you would like to apply
         </div>
-        <div class="dropdown mt-3">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                Dropdown button
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+        <div class="row">
+            <div class="col-12">
+                <div id="filterContainer">
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Edit Modal -->
+<div class="modal modal-lg fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Student <span id="studentName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    <div class="col-lg-6">
+                        @*<div class="form-group">
+                            <label class="control-label" for="edit-clubName">Club Name</label>
+                            <input class="form-control"  id="edit-clubName" type="text">
+                        </div>*@
+                        <div class="form-group">
+                            <label class="control-label" for="edit-clubName">Club Name</label>
+                            <select class="form-select" id="edit-clubName">
+                                <option value="0">Select A Club</option>
+                            </select>                        
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        @*<div class="form-group">
+                            <label class="control-label" for="edit-position">Position</label>
+                            <input class="form-control"  id="edit-position" type="text">
+                        </div>*@
+                        <div class="form-group">
+                            <label class="control-label" for="edit-position">Position</label>
+                            <select class="form-select" id="edit-position">
+                                <option value="0">Select A Position</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label" for="edit-name">Name</label>
+                            <input class="form-control"  id="edit-name" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label" for="edit-prefName">Preferred Name</label>
+                            <input class="form-control"  id="edit-prefName" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label" for="edit-phoneNum">Phone Number</label>
+                            <input class="form-control"  id="edit-phoneNum" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="control-label" for="edit-email">Email Address</label>
+                            <input class="form-control"  id="edit-email" type="text">
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="d-flex align-items-center float-end">
+                            <label class="form-check-label" for="edit-agreement">Agreement Signed:</label>
+                            <input id="edit-agreement" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="d-flex align-items-center float-end">
+                            <label class="form-check-label" for="edit-training">Training Complete:</label>
+                            <input id="edit-training" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="d-flex align-items-center float-end">
+                            <label class="form-check-label" for="edit-membership">Membership Purchased:</label>
+                            <input id="edit-membership" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="d-flex align-items-center float-end">
+                            <label class="form-check-label" for="edit-food">Food Certified:</label>
+                            <input id="edit-food" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveEditModal" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal -->
 <div class="modal modal-lg fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -67,94 +156,27 @@
             <div class="modal-body">
                 <div class="row form-container">
                     <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="control-label" for="clubName">Club Name</label>
-                            <input class="form-control"  id="clubName" type="text">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="control-label" for="position">Position</label>
-                            <input class="form-control"  id="position" type="text">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="control-label" for="name">Name</label>
-                            <input class="form-control"  id="name" type="text">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="control-label" for="prefName">Preferred Name</label>
-                            <input class="form-control"  id="prefName" type="text">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="control-label" for="phoneNum">Phone Number</label>
-                            <input class="form-control"  id="phoneNum" type="text">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="control-label" for="email">Email Address</label>
-                            <input class="form-control"  id="email" type="text">
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="d-flex align-items-center float-end">
-                            <label class="form-check-label" for="agreement">Agreement Signed:</label>
-                            <input id="agreement" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="d-flex align-items-center float-end">
-                            <label class="form-check-label" for="training">Training Complete:</label>
-                            <input id="training" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="d-flex align-items-center float-end">
-                            <label class="form-check-label" for="membership">Membership Purchased:</label>
-                            <input id="membership" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="d-flex align-items-center float-end">
-                            <label class="form-check-label" for="food">Food Certified:</label>
-                            <input id="food" type="checkbox" class="form-check" style="margin-left: 10px; margin-top: 2px;" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="saveAddModal" type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Email Modal -->
-<div class="modal modal-lg fade" id="emailModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row form-container">
-                    <div class="col-lg-6">
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label class="control-label" for="clubName">Club Name</label>
                             <input class="form-control" id="clubName" type="text">
+                        </div>*@
+                        <div class="form-group">
+                            <label class="control-label" for="clubName">Club Name</label>
+                            <select class="form-select" id="clubName">
+                                <option value="0">Select A Club</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label class="control-label" for="position">Position</label>
                             <input class="form-control" id="position" type="text">
+                        </div>*@
+                        <div class="form-group" >
+                            <label class="control-label" for="position">Position</label>
+                            <select class="form-select" id="position">
+                                <option value="0">Select A Position</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -214,13 +236,76 @@
     </div>
 </div>
 
+<!-- Email Modal -->
+<div class="modal modal-lg fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailModalLabel">Email Selected Students</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="sendEmail" type="button" class="btn btn-primary">Send Email</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts {
     <script>
+        var societyList = [];
+        var positionList = [];
         var table;
         $(document).ready(function () {
+            // Get the list of societies
+            $.ajax({
+                url: 'Student/GetSocieties',
+                type: 'GET',
+                success: function (data) {
+                    societyList = data;
+                    societyList.forEach(function (society) {
+                        $('#clubName').append(`<option value="${society.Club_Name}">${society.Club_Name}</option>`);
+                        $('#edit-clubName').append(`<option value="${society.Club_Name}">${society.Club_Name}</option>`);
+                    });
+                    // Get the list of positions
+                    $.ajax({
+                        url: 'Student/GetPositions',
+                        type: 'GET',
+                        success: function (data) {
+                            positionList = data;
+                            positionList.forEach(function (position) {
+                                $('#position').append(`<option value="${position.Position}">${position.Position}</option>`);
+                                $('#edit-position').append(`<option value="${position.Position}">${position.Position}</option>`);
+                            });
+                            // add societies and positions to the filter off canvas 
+                            societyList.forEach(function (society) {
+                                $('#filterContainer')
+                                    .append(`<div class="form-check">
+                                                <input class="form-check" type="checkbox" value="${society.Club_Name}" id="${society.Club_Name}">
+                                                <label class="form-check-label" for="${society.Club_Name}">${society.Club_Name}</label>
+                                            </div>`);
+                            });
+                            positionList.forEach(function (position) {
+                                $('#filterContainer')
+                                    .append(`<div class="form-check">
+                                                <input class="form-check" type="checkbox" value="${position.Position}" id="${position.Position}">
+                                                <label class="form-check" for="${position.Position}">${position.Position}</label>
+                                            </div>`);
+                                    });
+                        }
+                    });
+                }
+            });
+
+            // Initialize the DataTable
             table = $('#test-table').DataTable({ // Initialize DataTable on your table
                 "ajax": {
-                    "url": '@Url.Action("GetSUTest", "Home")', // The URL to the server-side data
+                    "url": 'Student/GetStudents', // The URL to the server-side data
                     "dataSrc": "", // Assuming the returned data is an array at the root level
                     "type": "GET", // Method type
                     "dataType": 'json' // Data type expected from the server
@@ -400,11 +485,11 @@
         $(document).on("click", "#saveAddModal", function () {
             // Update the database
             $.ajax({
-                url: '@Url.Action("AddEntryToSUTest", "Home")',
+                url: 'Student/AddStudent',
                 type: 'POST',
                 data: {
-                    Club_Name: $('#clubName').val(),
-                    Position: $('#position').val(),
+                    Club_Name: $('#clubName option:selected').text(),
+                    Position: $('#position option:selected').text(),
                     Student_Name: $('#name').val(),
                     Preferred_Name: $('#prefName').val(),
                     Phone_Number: $('#phoneNum').val(),
@@ -417,6 +502,69 @@
                 success: function (data) {
                     $('#addModal').modal('hide');
                     table.ajax.reload();
+                }
+            });
+        });
+
+        var selectedStudents = [];
+        // open the edit modal and grab a list of all selected students when the edit button is clicked
+        $(document).on("click", "#edit", function () {
+            selectedStudents = table.rows('.clicked').data();
+            if (selectedStudents.length === 0) {
+                alert('Please select a student to edit');
+                return;
+            }
+
+            $('#editModal').modal('show');
+            $('#studentName').text(selectedStudents[0].Student_Name);
+            $('#edit-clubName').val(selectedStudents[0].Club_Name).trigger('change');
+            $('#edit-position').val(selectedStudents[0].Position).trigger('change');
+            $('#edit-name').val(selectedStudents[0].Student_Name);
+            $('#edit-prefName').val(selectedStudents[0].Preferred_Name);
+            $('#edit-phoneNum').val(selectedStudents[0].Phone_Number);
+            $('#edit-email').val(selectedStudents[0].Email_Address);
+            $('#edit-agreement').prop('checked', selectedStudents[0].Agreement_Signed);
+            $('#edit-training').prop('checked', selectedStudents[0].Training_Complete);
+            $('#edit-membership').prop('checked', selectedStudents[0].Membership_Purchased);
+            $('#edit-food').prop('checked', selectedStudents[0].Food_Certified);
+        });
+
+        // When you save the changes made in the edit modal update the database and move on to the next item in the selectedStudents list
+        $(document).on("click", "#saveEditModal", function () {
+            $.ajax({
+                url: 'Student/UpdateStudent',
+                type: 'POST',
+                data: {
+                    Club_Name: $('#edit-clubName option:selected').text(),
+                    Position: $('#edit-position option:selected').text(),
+                    Student_Name: $('#edit-name').val(),
+                    Preferred_Name: $('#edit-prefName').val(),
+                    Phone_Number: $('#edit-phoneNum').val(),
+                    Email_Address: $('#edit-email').val(),
+                    Agreement_Signed: $('#edit-agreement').is(':checked'),
+                    Training_Complete: $('#edit-training').is(':checked'),
+                    Membership_Purchased: $('#edit-membership').is(':checked'),
+                    Food_Certified: $('#edit-food').is(':checked')
+                },
+                success: function (data) {
+                    selectedStudents.shift();
+                    if (selectedStudents.length === 0) {
+                        $('#editModal').modal('hide');
+                        table.ajax.reload();
+                    }
+                    else {
+                        $('#studentName').text(selectedStudents[0].Student_Name);
+                        $('#edit-clubName').val(selectedStudents[0].Club_Name).trigger('change');
+                        $('#edit-position').val(selectedStudents[0].Position).trigger('change');
+                        $('#edit-name').val(selectedStudents[0].Student_Name);
+                        $('#edit-prefName').val(selectedStudents[0].Preferred_Name);
+                        $('#edit-phoneNum').val(selectedStudents[0].Phone_Number);
+                        $('#edit-email').val(selectedStudents[0].Email_Address);
+                        $('#edit-agreement').prop('checked', selectedStudents[0].Agreement_Signed);
+                        $('#edit-training').prop('checked', selectedStudents[0].Training_Complete);
+                        $('#edit-membership').prop('checked', selectedStudents[0].Membership_Purchased);
+                        $('#edit-food').prop('checked', selectedStudents[0].Food_Certified);
+                    }
                 }
             });
         });

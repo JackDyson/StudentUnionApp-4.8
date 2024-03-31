@@ -10,12 +10,16 @@ namespace StudentUnionApp.Controllers
     {
         DatabaseContext DatabaseContext = new DatabaseContext();
         // GET: Society
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
+        #region Database Methods
+
         // get list of societies
+        [Authorize]
         public ActionResult GetSocieties()
         {
             try
@@ -29,6 +33,7 @@ namespace StudentUnionApp.Controllers
         }
 
         // delete society
+        [Authorize]
         public ActionResult DeleteSociety(int id)
         {
             try
@@ -45,6 +50,7 @@ namespace StudentUnionApp.Controllers
         }
 
         // add society
+        [Authorize]
         public ActionResult AddSociety(Societies society)
         {
             try
@@ -60,6 +66,7 @@ namespace StudentUnionApp.Controllers
         }
 
         // get list of positions
+        [Authorize]
         public ActionResult GetPositions()
         {
             try
@@ -73,6 +80,7 @@ namespace StudentUnionApp.Controllers
         }
 
         // delete position
+        [Authorize]
         public ActionResult DeletePosition(int id)
         {
             try
@@ -89,6 +97,7 @@ namespace StudentUnionApp.Controllers
         }
 
         // add position
+        [Authorize]
         public ActionResult AddPosition(Positions position)
         {
             try
@@ -102,5 +111,7 @@ namespace StudentUnionApp.Controllers
                 return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        #endregion
     }
 }
