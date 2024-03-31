@@ -16,6 +16,7 @@ namespace StudentUnionApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public void SendFeedback(string name, string email, string message)
         {
             MailSender mailSender = new MailSender();

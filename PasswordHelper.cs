@@ -8,7 +8,13 @@ namespace StudentUnionApp
 {
     public class PasswordHelper
     {
-        // password hashing function for staff
+        /// <summary>
+        ///     Hashes a password using a random salt and 10000 iterations of HMACSHA1
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>
+        ///     The hashed password
+        /// </returns>
         public static string HashPassword(string password)
         {
             // generate a random salt
@@ -26,7 +32,14 @@ namespace StudentUnionApp
             return Convert.ToBase64String(hashBytes);
         }
 
-        // password verification function for staff
+        /// <summary>
+        ///     Compares a password to a hashed password to determine if they are the same
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="hashedPassword"></param>
+        /// <returns>
+        ///     True if the password matches the hashed password, false otherwise
+        /// </returns>
         public static bool VerifyPassword(string password, string hashedPassword)
         {
             // extract the bytes

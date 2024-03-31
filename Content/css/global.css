@@ -110,11 +110,17 @@ body {
         border-color: var(--accent2) !important;
         background-color: var(--accent1);
     }
-    input[type="text"].form-control:focus, input[type="search"].form-control:focus, textarea.form-control:focus {
-        background-color: #fff;
+
+    input.form-control:focus,
+    input[type="search"].form-control:focus,
+    textarea.form-control:focus,
+    .form-select:focus {
+        background-color: #fff !important;
+        border-color: var(--accent2) !important;
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--accent2) !important;
     }
 
-input.form-control, textarea.form-control {
+input.form-control, textarea.form-control, .form-select {
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     border-radius: 20px;

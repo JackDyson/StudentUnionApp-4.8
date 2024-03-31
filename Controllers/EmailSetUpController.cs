@@ -32,19 +32,22 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        //adds a new email template
+        // adds a new email template
+        [Authorize]
         public void AddEmailTemplate(string title, string subject, string content)
         {
             _context.AddEmailTemplate(title, subject, content);
         }
 
         // updates an email template
+        [Authorize]
         public void UpdateEmailTemplate(int id, string title, string subject, string content)
         {
             _context.UpdateEmailTemplate(id, title, subject, content);
         }
 
         // deletes an email template
+        [Authorize]
         public void DeleteEmailTemplate(int id)
         {
             _context.DeleteEmailTemplate(id);
