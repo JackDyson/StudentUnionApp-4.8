@@ -8,13 +8,220 @@
         <section class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h1>Coming Soon</h1>
+                    <div class="row sticky dt-header-row" style="background-color: var(--card-bg)">
+                        <div class="col-md-10 mt-2 mb-2">
+                            <input type="text" id="search" class="form-control" placeholder="Search" />
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-between mt-2 mb-2">
+                            <button id="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <table id="staff-table" class="w-100 dataTable">
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 </main>
 
-@section scripts {
+<!-- Add Modal -->
+<div class="modal modal-lg fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add Staff Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="control-label" for="name">Name</label>
+                            <input class="form-control" id="name" type="text">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="control-label" for="email">Email</label>
+                            <input class="form-control" id="email" type="text">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-check-label" for="role">Role</label>
+                        <input class="form-control" id="role" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveAddModal" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Edit Modal -->
+<div class="modal modal-lg fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Staff Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-container">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="control-label" for="edit-name">Name</label>
+                            <input class="form-control" id="edit-name" type="text">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-check-label" for="edit-role">Role</label>
+                        <input class="form-control" id="edit-role" type="text">
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="resetPassword">
+                            <label class="form-check-label" for="resetPassword">Reset User's Password</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="delete" type="button" class="btn btn-primary">Delete</button>
+                <button id="saveEditModal" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        var staffTable;
+        $(document).ready(function () {
+            buildStaffTable();
+        });
+
+        // search the staff datatable
+        $(document).on('keyup', '#search', function () {
+            staffTable.search($(this).val()).draw();
+        });
+
+        // open the add modal
+        $(document).on('click', '#add', function () {
+            $('#addModal').modal('show');
+        });
+
+        // save the add modal
+        $(document).on('click', '#saveAddModal', function () {
+            // if all fields are not filled out, return
+            if ($('#name').val() === '' || $('#email').val() === '' || $('#role').val() === '') {
+                alert('Please fill out all fields');
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Staff/AddStaff',
+                data: {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    role: $('#role').val()
+                },
+                success: function (data) {
+                    $('#addModal').modal('hide');
+                    staffTable.ajax.reload();
+                }
+            });
+        });
+
+        // open the edit modal when any button with id starting with edit- is clicked
+        var idToEdit = null;
+        $(document).on('click', 'button[id^="edit-"]', function (e) {
+            idToEdit = $(this).attr('id').split('-')[1];
+            $(e.target).closest('tr');
+            var data = staffTable.row($(e.target).closest('tr')).data();
+            $('#edit-name').val(data.Name);
+            $('#edit-role').val(data.Role);
+            $('#resetPassword').prop('checked', false);
+
+            $('#editModal').modal('show');
+        });
+
+        // Save the changes made in the edit modal
+        $(document).on('click', '#saveEditModal', function () {
+            // if all fields are not filled out, return
+            if ($('#edit-name').val() === '' || $('#edit-role').val() === '') {
+                alert('Please fill out all fields');
+                return;
+            }
+            var name = $('#edit-name').val();
+            var role = $('#edit-role').val();
+
+            $.ajax({
+                url: '/Staff/UpdateStaff',
+                type: 'POST',
+                data: {
+                    id: idToEdit,
+                    name: name,
+                    role: role,
+                    passwordReset: $('#resetPassword').is(':checked')
+                },
+                success: function (data) {
+                    $('#editModal').modal('hide');
+                    staffTable.ajax.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            idToEdit = null;
+        });
+
+
+        // Build the staff datatable
+        function buildStaffTable() {
+            staffTable = $('#staff-table').DataTable({
+                "ajax": {
+                    "url": "/Staff/GetStaff",
+                    "dataSrc": "", // Assuming the returned data is an array at the root level
+                    "type": "GET", // Method type
+                    "dataType": 'json' // Data type expected from the server
+                },
+                "dom": 't',
+                "serverSide": false, // Server-side processing
+                "order": [[0, "asc"]], // Initial sorting column
+                "paging": false, // Enable paging
+                "searching": true, // Enable searching
+                "columnDefs": [
+                    { "title": "Name", targets: 0 },
+                    { "title": "Email", "targets": 1 },
+                    { "title": "Role", "targets": 2 },
+                    { "title": "Actions", "targets": 3 },
+                    { "orderable": false, "targets": 3 }
+                ],
+                "columns": [
+                    { data: "Name" },
+                    { data: "Email" },
+                    { data: "Role" },
+                    {
+                        data: "Staff_ID",
+                        render: function (data, type, row, meta) {
+                            return `<div><button id="edit-${data}" class="btn btn-primary">Edit</button></div>`
+                        },
+                        width: "50px"
+                    },
+                ],
+                "language": {
+                    "emptyTable": "No data found"
+                }
+            });
+        }
+
+    </script>
 }

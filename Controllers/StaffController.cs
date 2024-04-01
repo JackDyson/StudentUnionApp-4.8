@@ -35,17 +35,19 @@ namespace StudentUnionApp.Controllers
 
         // adds a new staff
         [Authorize]
-        public void AddStaff(string name, string email, string password, string role)
+        public void AddStaff(string name, string email, string role)
         {
-            _context.AddStaff(name, email, PasswordHelper.HashPassword(password), role);
+            _context.AddStaff(name, email, "password", role);
         }
 
         // updates a staff
         [Authorize]
-        public void UpdateStaff(int id, string name, string email, string password, string role)
+        public void UpdateStaff(int id, string name, string role, bool passwordReset)
         {
-            _context.UpdateStaff(id, name, email, PasswordHelper.HashPassword(password), role);
+            _context.UpdateStaff(id, name, role, passwordReset);
         }
+
+        
 
         // deletes a staff
         [Authorize]

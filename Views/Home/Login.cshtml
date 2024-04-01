@@ -25,7 +25,7 @@
 <body theme="light" accent="pink">
     <div class="container body-content">
         <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
-            <div class="card mx-auto" style="width: 300px">
+            <div id="loginCard" class="card mx-auto" style="width: 300px">
                 <div class="card-body">
                     <h2 class="text-center">Login</h2>
                     @using (Html.BeginForm("Login", "Home", FormMethod.Post))
@@ -52,6 +52,23 @@
                     }
                 </div>
             </div>
+            <div id="passwordResetCard" class="card mx-auto d-none" style="width: 300px">
+                <div class="card-body">
+                    <h2 class="text-center">Create New Password</h2>
+                    <label class="text-danger d-none" id="passwords-not-match">Your passwords do not match</label>
+                    <div class="form-group">
+                        <label class="form-label" for="new-password-1">Enter a New Password</label>
+                        <input type="password" id="new-password-1" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="new-password-2">Re-enter New Password</label>
+                        <input type="password" id="new-password-2" class="form-control" />
+                    </div>
+                    <div class="text-center">
+                        <button id="createNewPassword" class="btn btn-primary mt-4">Create New Password</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
@@ -59,6 +76,62 @@
     <script src="~/Scripts/dataTables/datatables.min.js"></script>
     <script src="~/Scripts/global.js?release=@Guid.NewGuid()"></script>
 
+    <script>
+        $(document).on('blur', '#Email', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/CheckPasswordReset',
+                data: { email: $('#Email').val() },
+                success: function (data) {
+                    if (data.success) {
+                        alert('You need to create a new password')
+                        // show the password reset card
+                        $('#passwordResetCard').removeClass('d-none');
+                        // hide the login card
+                        $('#loginCard').addClass('d-none');
+                    }
+                    else {
+                        return;
+                    }
+                }
+            });
+        });
 
+        // on keyup check if the passwords match
+        $(document).on('keyup', '#new-password-1, #new-password-2', function () {
+            if ($('#new-password-1').val() === $('#new-password-2').val()) {
+                $('#passwords-not-match').addClass('d-none');
+            }
+            else {
+                $('#passwords-not-match').removeClass('d-none');
+            }
+        });
+
+        // on click update the password for the email address
+        $(document).on('click', '#createNewPassword', function () {
+            if ($('#new-password-1').val() === $('#new-password-2').val()) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/UpdatePassword',
+                    data: { email: $('#Email').val(), password: $('#new-password-1').val() },
+                    success: function (data) {
+                        if (data.success) {
+                            alert('Password updated');
+                            // show the login card
+                            $('#loginCard').removeClass('d-none');
+                            // hide the password reset card
+                            $('#passwordResetCard').addClass('d-none');
+                            $('#new-password-1').val('');
+                            $('#new-password-2').val('');
+                            
+                        }
+                        else {
+                            alert('Error updating password');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

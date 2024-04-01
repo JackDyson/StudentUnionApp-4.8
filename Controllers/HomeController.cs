@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -89,6 +90,23 @@ namespace StudentUnionApp.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+        // Check if the users password needs updating
+        public ActionResult CheckPasswordReset(string email)
+        {
+            if (CheckIfPasswordNeedsUpdating(email))
+            {
+                return Json(new { success = true, responseText = "Password needs updating" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, responseText = "Password does not need updating" }, JsonRequestBehavior.AllowGet);
+        }
+
+        // hash a given password and update the database with the new password for the given email
+        public ActionResult UpdatePassword(string email, string password)
+        {
+            _context.UpdatePassword(email, PasswordHelper.HashPassword(password));
+            return Json(new { success = true, responseText = "Password updated" }, JsonRequestBehavior.AllowGet);
+        }
+
         private bool CheckUserCredentials(string email, string password)
         {
             // remove this later
@@ -106,6 +124,22 @@ namespace StudentUnionApp.Controllers
                     {
                         return true;
                     }                    
+                }
+            }
+            return false;
+        }
+
+        private bool CheckIfPasswordNeedsUpdating(string email)
+        {
+            var staff = _context.Staff.ToList();
+            foreach (var s in staff)
+            {
+                if (s.Email == email)
+                {
+                    if (s.Reset_Password)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

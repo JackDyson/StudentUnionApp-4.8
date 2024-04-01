@@ -90,6 +90,46 @@ namespace StudentUnionApp
             }
         }
 
+        /// <summary>
+        ///    Send an email to a student from a template
+        /// </summary>
+        /// <param name="studemt"></param>
+        /// <param name="subject"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public bool SendEmailFromTemplate(Students studemt, string subject, string body)
+        {
+            var content = ReplaceEmailTemplate(body, studemt.Student_Name, studemt.Preferred_Name, studemt.Club_Name, studemt.Position);
+            try
+            {
+                MailAddress from = new MailAddress("info@sutest.co.uk");
+                MailAddress toAddress = new MailAddress(studemt.Email_Address);
+                MailMessage mail = new MailMessage(from, toAddress)
+                {
+                    Subject = subject,
+                    IsBodyHtml = true,
+                    Body = StringHelper.ReplaceNewLineWithBr(content)
+                };
+                _Smtp.Send(mail);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _Context.AddErrorLog("MailSender", "SendEmailFromTemplate", ex.Message);
+                return false;
+            }
+        }
+
+        // function that replaces multiple instances of [Name], [Prefferred_Name] [Club] and [Position] with the appropriate values
+        public string ReplaceEmailTemplate(string template, string name, string preferredName, string club, string position)
+        {
+            template = template.Replace("[Name]", name);
+            template = template.Replace("[Preferred_Name]", preferredName);
+            template = template.Replace("[Club]", club);
+            template = template.Replace("[Position]", position);
+            return template;
+        }
+
         #region Misc
 
 

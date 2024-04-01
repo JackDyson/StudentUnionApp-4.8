@@ -19,7 +19,7 @@
                         <div class="col-md-4 d-flex justify-content-between mt-2 mb-2">
                             <button id="export" class="btn btn-primary">Export</button>
                             <button id="upload" class="btn btn-primary">Upload</button>
-                            <button id="sendEmail" class="btn btn-primary">Email</button>
+                            <button id="emailBtn" class="btn btn-primary">Email</button>
                         </div>
                     </div>
                     <div class="row">
@@ -37,16 +37,16 @@
 <!-- Filters -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffCanvas" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filter</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div>
-            Select the filters you would like to apply
+        <div class="mb-3">
+            Select the filters you would like to apply:
         </div>
         <div class="row">
             <div class="col-12">
-                <div id="filterContainer">
+                <div id="filterContainer" class="row">
 
                 </div>
             </div>
@@ -59,32 +59,24 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Student <span id="studentName"></span></h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Student: <span id="studentName"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row form-container">
                     <div class="col-lg-6">
-                        @*<div class="form-group">
-                            <label class="control-label" for="edit-clubName">Club Name</label>
-                            <input class="form-control"  id="edit-clubName" type="text">
-                        </div>*@
                         <div class="form-group">
                             <label class="control-label" for="edit-clubName">Club Name</label>
                             <select class="form-select" id="edit-clubName">
-                                <option value="0">Select A Club</option>
+                                <option value="none">Select A Club</option>
                             </select>                        
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        @*<div class="form-group">
-                            <label class="control-label" for="edit-position">Position</label>
-                            <input class="form-control"  id="edit-position" type="text">
-                        </div>*@
                         <div class="form-group">
                             <label class="control-label" for="edit-position">Position</label>
                             <select class="form-select" id="edit-position">
-                                <option value="0">Select A Position</option>
+                                <option value="none">Select A Position</option>
                             </select>
                         </div>
                     </div>
@@ -150,7 +142,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="addModalLabel">Add Student</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -163,7 +155,7 @@
                         <div class="form-group">
                             <label class="control-label" for="clubName">Club Name</label>
                             <select class="form-select" id="clubName">
-                                <option value="0">Select A Club</option>
+                                <option value="none">Select A Club</option>
                             </select>
                         </div>
                     </div>
@@ -175,7 +167,7 @@
                         <div class="form-group" >
                             <label class="control-label" for="position">Position</label>
                             <select class="form-select" id="position">
-                                <option value="0">Select A Position</option>
+                                <option value="none">Select A Position</option>
                             </select>
                         </div>
                     </div>
@@ -246,7 +238,21 @@
             </div>
             <div class="modal-body">
                 <div class="row form-container">
-                    
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="form-label" for="email-template">Template</label>
+                            <select class="form-select" id="email-template">
+                                <option value="none">Select A Template</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label>Students Selected: <span id="selected-students-count"></span></label>
+                        </div>
+                        <div class="col-12">
+                            <label for="email-preiview">Preiview</label>
+                            <textarea class="form-control" id="email-preview" rows="8" disabled></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -262,42 +268,93 @@
         var positionList = [];
         var table;
         $(document).ready(function () {
+            // #region Scocieties and Positions
             // Get the list of societies
             $.ajax({
-                url: 'Student/GetSocieties',
+                url: '/Student/GetSocietyList',
                 type: 'GET',
                 success: function (data) {
                     societyList = data;
+                    // add societies to the filter off canvas and selects
+                    if (societyList.length > 0) {
+                        $('#filterContainer')
+                            .append(`<div class="col-12">
+                                        <label>Societies:</label>
+                                     </div>`)
+                    }
                     societyList.forEach(function (society) {
-                        $('#clubName').append(`<option value="${society.Club_Name}">${society.Club_Name}</option>`);
-                        $('#edit-clubName').append(`<option value="${society.Club_Name}">${society.Club_Name}</option>`);
+                        $('#filterContainer')
+                            .append(`<div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="${society.Society_Name}" id="${society.Society_Name}">
+                                            <label class="form-check-label" for="${society.Society_Name}">${society.Society_Name}</label>
+                                        </div>
+                                    </div>`);
+
+                        $('#clubName').append(`<option value="${society.Society_Name}">${society.Society_Name}</option>`);
+                        $('#edit-clubName').append(`<option value="${society.Society_Name}">${society.Society_Name}</option>`);
                     });
+
                     // Get the list of positions
                     $.ajax({
-                        url: 'Student/GetPositions',
+                        url: '/Student/GetPositionList',
                         type: 'GET',
                         success: function (data) {
                             positionList = data;
-                            positionList.forEach(function (position) {
-                                $('#position').append(`<option value="${position.Position}">${position.Position}</option>`);
-                                $('#edit-position').append(`<option value="${position.Position}">${position.Position}</option>`);
-                            });
-                            // add societies and positions to the filter off canvas 
-                            societyList.forEach(function (society) {
+                            // add positions to the filter off canvas and selects
+                            if (positionList.length > 0) {
                                 $('#filterContainer')
-                                    .append(`<div class="form-check">
-                                                <input class="form-check" type="checkbox" value="${society.Club_Name}" id="${society.Club_Name}">
-                                                <label class="form-check-label" for="${society.Club_Name}">${society.Club_Name}</label>
-                                            </div>`);
-                            });
+                                    .append(`<div class="col-12">
+                                                <label>Positions:</label>
+                                             </div>`)
+                            }
                             positionList.forEach(function (position) {
                                 $('#filterContainer')
-                                    .append(`<div class="form-check">
-                                                <input class="form-check" type="checkbox" value="${position.Position}" id="${position.Position}">
-                                                <label class="form-check" for="${position.Position}">${position.Position}</label>
-                                            </div>`);
-                                    });
+                                    .append(`<div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="${position.Position_Name}" id="${position.Position_Name}">
+                                                    <label class="form-check-label" for="${position.Position_Name}">${position.Position_Name}</label>
+                                                </div>
+                                             </div>`);
+
+                                $('#position').append(`<option value="${position.Position_Name}">${position.Position_Name}</option>`);
+                                $('#edit-position').append(`<option value="${position.Position_Name}">${position.Position_Name}</option>`);
+                            });
                         }
+                    });
+                }
+            });
+            // #endregion
+            // Add actionables items to the filter list (Agreement, Training, Membership and Food)
+            $('#filterContainer')
+                .append(`<div class="col-12">
+                                <label>Actionables:</label>
+                             </div>`)
+                .append(`<div class="col-12">
+                                <input class="form-check-input" type="checkbox" value="Agreement" id="Agreement-filter">
+                                <label class="form-check-label" type="checkbox" value="Agreement" for="Agreement-filter">No Agreement Signed</label>
+                            </div>`)
+                .append(`<div class="col-12">
+                                <input class="form-check-input" type="checkbox" value="Training" id="Training-filter">
+                                <label class="form-check-label" type="checkbox" value="Training" for="Training-filter">Training Incomplete</label>
+                            </div>`)
+                .append(`<div class="col-12">
+                                <input class="form-check-input" type="checkbox" value="Membership" id="Membership-filter">
+                                <label class="form-check-label" type="checkbox" value="Membership" for="Membership-filter">No Membership Purchased</label>
+                            </div>`)
+                .append(`<div class="col-12">
+                                <input class="form-check-input" type="checkbox" value="Food" id="Food-filter">
+                                <label class="form-check-label" type="checkbox" value="Food" for="Food-filter">Not Food Certified</label>
+                            </div>`);
+
+            // Get list of email templates
+            $.ajax({
+                url: '/Student/GetEmailTemplates',
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    data.forEach(function (template) {
+                        $('#email-template').append(`<option value="${template.ID}" data-email-body="${template.Email_Content}">${template.Title}</option>`);
                     });
                 }
             });
@@ -305,7 +362,7 @@
             // Initialize the DataTable
             table = $('#test-table').DataTable({ // Initialize DataTable on your table
                 "ajax": {
-                    "url": 'Student/GetStudents', // The URL to the server-side data
+                    "url": '/Student/GetStudents', // The URL to the server-side data
                     "dataSrc": "", // Assuming the returned data is an array at the root level
                     "type": "GET", // Method type
                     "dataType": 'json' // Data type expected from the server
@@ -353,6 +410,7 @@
                     { "title": "Membership", "targets": 11 },
                     { "title": "Food", "targets": 12 },
                     { "title": "Students", "targets": 13 },
+                    { "title": "", "targets": 14 },
                     { "className": "text-center", "targets": [9, 10, 11, 12] },
                     { "visible": false, "targets": getColumnsToHide() }
                 ],
@@ -461,6 +519,25 @@
                                                 </div>
                                         </div>`
                         }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            var returnString = '';
+                            if (row.Agreement_Signed === false) {
+                                returnString += 'Agreement Not Signed '
+                            }
+                            if (row.Training_Complete === false) {
+                                returnString += 'Training Incomplete '
+                            }
+                            if (row.Membership_Purchased === false) {
+                                returnString += 'Membership Not Purchased '
+                            }
+                            if (row.Food_Certified === false) {
+                                returnString += 'Not Food Certified '
+                            }
+                            return returnString;
+                        }
                     }
                 ]
             });
@@ -481,23 +558,28 @@
         $(document).on("click", "#add", function () {
             $('#addModal').modal('show');
         });
-
+        
         $(document).on("click", "#saveAddModal", function () {
+            // Check if the clubName and position are set
+            if ($('#clubName option:selected').val() === 'none' || $('#position option:selected').val() === 'none') {
+                alert('Please select a club and position');
+                return;
+            }
             // Update the database
             $.ajax({
-                url: 'Student/AddStudent',
+                url: '/Student/AddStudent',
                 type: 'POST',
                 data: {
-                    Club_Name: $('#clubName option:selected').text(),
-                    Position: $('#position option:selected').text(),
-                    Student_Name: $('#name').val(),
-                    Preferred_Name: $('#prefName').val(),
-                    Phone_Number: $('#phoneNum').val(),
-                    Email_Address: $('#email').val(),
-                    Agreement_Signed: $('#agreement').is(':checked'),
-                    Training_Complete: $('#training').is(':checked'),
-                    Membership_Purchased: $('#membership').is(':checked'),
-                    Food_Certified: $('#food').is(':checked')
+                    clubName: $('#clubName option:selected').text(),
+                    position: $('#position option:selected').text(),
+                    studentName: $('#name').val(),
+                    preferredName: $('#prefName').val(),
+                    phoneNumber: $('#phoneNum').val(),
+                    emailAddress: $('#email').val(),
+                    agreementSigned: $('#agreement').is(':checked'),
+                    trainingComplete: $('#training').is(':checked'),
+                    membershipPurchased: $('#membership').is(':checked'),
+                    foodCertified: $('#food').is(':checked')
                 },
                 success: function (data) {
                     $('#addModal').modal('hide');
@@ -531,20 +613,26 @@
 
         // When you save the changes made in the edit modal update the database and move on to the next item in the selectedStudents list
         $(document).on("click", "#saveEditModal", function () {
+            // check if the clubName and position are set
+            if ($('#edit-clubName option:selected').val() === 'none' || $('#edit-position option:selected').val() === 'none') {
+                alert('Please select a club and position');
+                return;
+            }
             $.ajax({
-                url: 'Student/UpdateStudent',
+                url: '/Student/UpdateStudent',
                 type: 'POST',
                 data: {
-                    Club_Name: $('#edit-clubName option:selected').text(),
-                    Position: $('#edit-position option:selected').text(),
-                    Student_Name: $('#edit-name').val(),
-                    Preferred_Name: $('#edit-prefName').val(),
-                    Phone_Number: $('#edit-phoneNum').val(),
-                    Email_Address: $('#edit-email').val(),
-                    Agreement_Signed: $('#edit-agreement').is(':checked'),
-                    Training_Complete: $('#edit-training').is(':checked'),
-                    Membership_Purchased: $('#edit-membership').is(':checked'),
-                    Food_Certified: $('#edit-food').is(':checked')
+                    id: selectedStudents[0].Student_ID,
+                    clubName: $('#edit-clubName option:selected').text(),
+                    position: $('#edit-position option:selected').text(),
+                    studentName: $('#edit-name').val(),
+                    preferredName: $('#edit-prefName').val(),
+                    phoneNumber: $('#edit-phoneNum').val(),
+                    emailAddress: $('#edit-email').val(),
+                    agreementSigned: $('#edit-agreement').is(':checked'),
+                    trainingComplete: $('#edit-training').is(':checked'),
+                    membershipPurchased: $('#edit-membership').is(':checked'),
+                    foodCertified: $('#edit-food').is(':checked')
                 },
                 success: function (data) {
                     selectedStudents.shift();
@@ -569,6 +657,89 @@
             });
         });
 
+        // link the filter checkboxes to the DataTable
+        $(document).on("change", "#filterContainer .form-check-input", function () {
+            var filters = [];
+            var actionableFilters = [];
+            $('#filterContainer .form-check-input').each(function () {
+                if ($(this).is(':checked')) {
+                    if ($(this).val() === 'Agreement') {
+                        actionableFilters.push('Agreement Not Signed');
+                    }
+                    else if ($(this).val() === 'Training') {
+                        actionableFilters.push('Training Incomplete');
+                    }
+                    else if ($(this).val() === 'Membership') {
+                        actionableFilters.push('Membership Not Purchased');
+                    }
+                    else if ($(this).val() === 'Food') {
+                        actionableFilters.push('Not Food Certified');
+                    }
+                    else {
+                        filters.push($(this).val());
+                    }
+                }
+            });
+            table.column(14).search(actionableFilters.join('|'), true, false).draw();
+            table.search(filters.join('|'), true, false).draw();
+        });
+
+        // when you click the send email button open the email modal
+        $(document).on("click", "#emailBtn", function () {
+            selectedStudents = table.rows('.clicked').data();
+            if (selectedStudents.length === 0) {
+                alert('Please select a student to email');
+                return;
+            }
+            // display the number of selected students in the email modal
+            $('#selected-students-count').text(selectedStudents.length);
+            $('#emailModal').modal('show');
+        });
+
+        // when you select a template update the preview text area
+        $(document).on("change", "#email-template", function () {
+            // if the value of the option is none, reset the text area and return
+            if ($('#email-template option:selected').val() === 'none') {
+                $('#email-preview').val('');
+                return;
+            }
+            var template = $('#email-template option:selected').attr('data-email-body');
+            $('#email-preview').val(replaceTemplate(template, selectedStudents[0]));
+        });
+
+        // when you click the send email button, pass the selected students and the template to the server
+        $(document).on("click", "#sendEmail", function () {
+            // if the value of the optiobn is none, alert the user and return
+            if ($('#email-template option:selected').val() === 'none') {
+                alert('Please select a template');
+                return;
+            }
+            var students = [];
+            selectedStudents.each(function (student) {
+                students.push(student);
+            });
+            $.ajax({
+                url: '/Student/SendEmailToStudents',
+                type: 'POST',
+                data: {
+                    students: students,
+                    templateID: $('#email-template option:selected').val()
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#emailModal').modal('hide');
+                }
+            });
+        });
+
+        // function that replaces all instances of [Name], [Prefferred_Name] [Club] and [Position] with the appropriate values
+        function replaceTemplate(template, student) {
+            return template.replaceAll('[Name]', student.Student_Name)
+                .replaceAll('[Preferred_Name]', student.Preferred_Name)
+                .replaceAll('[Club]', student.Club_Name)
+                .replaceAll('[Position]', student.Position);
+        }
+
         function convToIcon(data) {
             return data === true ? '<i class="uis uis-check-circle"></i>' : '<i class="uis uis-times-circle"></i>';
         }
@@ -576,10 +747,10 @@
         // Returns a list of columns to hide based on the width of the screen
         function getColumnsToHide() {
             if ($(window).width() < 1200) {
-                return [0,1,2,3,4,5,6,7,8,9,10,11,12];
+                return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14];
             }
             else {
-                return [1, 2, 4, 5, 7, 8, 13];
+                return [1, 2, 4, 5, 7, 8, 13, 14];
             }
         }
     </script>

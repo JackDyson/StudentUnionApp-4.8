@@ -38,7 +38,7 @@ namespace StudentUnionApp.Controllers
 
         // adds a new student
         [Authorize]
-        public void AddStudentstring(string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
+        public void AddStudent(string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
         {
             _context.AddStudent(clubName, position, studentName, preferredName, phoneNumber, emailAddress, agreementSigned, trainingComplete, membershipPurchased, foodCertified);
         }
@@ -83,6 +83,39 @@ namespace StudentUnionApp.Controllers
             {
                 return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        // get email templates
+        [Authorize]
+        public ActionResult GetEmailTemplates()
+        {
+            try
+            {
+                return Json(_context.GetEmailTemplates(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // send email to multiple students
+        [Authorize]
+        public ActionResult SendEmailToStudents(int templateID, List<Students> students)
+        {
+            bool success = true;
+            // get email template
+            Email_Templates emailTemplate = _context.GetEmailTemplate(templateID);                
+            MailSender emailSender = new MailSender();
+            // send email to each student
+            foreach (Students student in students)
+            {
+                if (!emailSender.SendEmailFromTemplate(student, emailTemplate.Subject, emailTemplate.Email_Content))
+                {
+                    success = false;
+                }
+            }
+            return Json(new { success = success }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

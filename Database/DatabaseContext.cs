@@ -134,7 +134,8 @@ public class DatabaseContext : DbContext
                 Name = name,
                 Email = email,
                 Password = password,
-                Role = role
+                Role = role,
+                Reset_Password = true
             };
             Staff.Add(staff);
             SaveChanges();
@@ -146,15 +147,14 @@ public class DatabaseContext : DbContext
     }
 
     // updates a staff member
-    public void UpdateStaff(int id, string name, string email, string password, string role)
+    public void UpdateStaff(int id, string name, string role, bool passwordReset)
     {
         try
         {
             Staff staff = Staff.Find(id);
             staff.Name = name;
-            staff.Email = email;
-            staff.Password = password;
             staff.Role = role;
+            staff.Reset_Password = passwordReset;
             SaveChanges();
         }
         catch (Exception ex)
@@ -175,6 +175,22 @@ public class DatabaseContext : DbContext
         catch (Exception ex)
         {
             AddErrorLog("EmailSetUpController", "DeleteStaff", ex.Message);
+        }
+    }
+
+    // updates a staff member's password
+    public void UpdatePassword(string email, string password)
+    {
+        try
+        {
+            Staff staff = Staff.FirstOrDefault(s => s.Email == email);
+            staff.Password = password;
+            staff.Reset_Password = false;
+            SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            AddErrorLog("EmailSetUpController", "UpdatePassword", ex.Message);
         }
     }
 
@@ -272,6 +288,12 @@ public class DatabaseContext : DbContext
     public List<Email_Templates> GetEmailTemplates() 
     { 
         return Email_Templates.ToList();
+    }
+
+    // returns a specific email template
+    public Email_Templates GetEmailTemplate(int id)
+    {
+        return Email_Templates.Find(id);
     }
 
     // adds a new email template
@@ -388,6 +410,7 @@ public class Staff
     public string Email { get; set; }
     public string Password { get; set; }
     public string Role { get; set; }
+    public bool Reset_Password { get; set; }
 }
 
 [Table("ErrorLog")]
