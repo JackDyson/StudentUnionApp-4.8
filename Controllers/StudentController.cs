@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -116,6 +117,29 @@ namespace StudentUnionApp.Controllers
                 }
             }
             return Json(new { success = success }, JsonRequestBehavior.AllowGet);
+        }
+
+        // upload students from excel
+        [Authorize]
+        public ActionResult UploadStudents(string file)
+        {
+            return Json(new Upload().ProcessBase64File(file), JsonRequestBehavior.AllowGet);
+        }
+
+        // download template excel file
+        [Authorize]
+        public ActionResult DownloadTemplate()
+        {
+            string filePath = HttpContext.Server.MapPath("~/UploadTemplates/HSU-Upload-Template.xlsx");
+
+            // Check if the file exists
+            if (!System.IO.File.Exists(filePath))
+            {
+                return HttpNotFound();
+            }
+
+            // Return the file as a FileStreamResult
+            return File(new FileStream(filePath, FileMode.Open), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "HSU-Upload-Template.xlsx");
         }
 
         #endregion
