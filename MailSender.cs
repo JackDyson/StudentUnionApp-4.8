@@ -120,7 +120,15 @@ namespace StudentUnionApp
             }
         }
 
-        // function that replaces multiple instances of [Name], [Prefferred_Name] [Club] and [Position] with the appropriate values
+        /// <summary>
+        ///     Replaces multiple instances of [Name], [Prefferred_Name] [Club] and [Position] with the appropriate values
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="name"></param>
+        /// <param name="preferredName"></param>
+        /// <param name="club"></param>
+        /// <param name="position"></param>
+        /// <returns>The body of text with the replaced values</returns>
         public string ReplaceEmailTemplate(string template, string name, string preferredName, string club, string position)
         {
             template = template.Replace("[Name]", name);
@@ -129,30 +137,6 @@ namespace StudentUnionApp
             template = template.Replace("[Position]", position);
             return template;
         }
-
-        #region Misc
-
-
-        /// <summary>
-        ///     Builds a standard footer for the emails sent via the Cron service
-        /// </summary>
-        /// <param name="cronId">CronID of engine (where applicable)</param>
-        /// <returns></returns>
-        private string EmailFooter(string senderName = "RB Academy", long cronId = 0)
-        {
-            var footer = "" + Environment.NewLine;
-            try
-            {
-                footer += $"Regards," + Environment.NewLine + senderName;
-            }
-            catch (Exception ex)
-            {
-                _Context.AddErrorLog("MailSender", "EmailFooter", ex.Message, senderName);
-            }
-            return footer;
-        }
-
-        #endregion
 
         #endregion
     }

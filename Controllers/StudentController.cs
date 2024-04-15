@@ -23,8 +23,11 @@ namespace StudentUnionApp.Controllers
 
         #region Database Methods
 
+        /// <summary>
+        ///     Returns a list of students
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
-        // returns all students
         public ActionResult GetStudents()
         {
             try
@@ -37,28 +40,59 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // adds a new student
+        /// <summary>
+        ///     Adds a student to the database
+        /// </summary>
+        /// <param name="clubName"></param>
+        /// <param name="position"></param>
+        /// <param name="studentName"></param>
+        /// <param name="preferredName"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="agreementSigned"></param>
+        /// <param name="trainingComplete"></param>
+        /// <param name="membershipPurchased"></param>
+        /// <param name="foodCertified"></param>
         [Authorize]
         public void AddStudent(string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
         {
             _context.AddStudent(clubName, position, studentName, preferredName, phoneNumber, emailAddress, agreementSigned, trainingComplete, membershipPurchased, foodCertified);
         }
 
-        // updates a student
+        /// <summary>
+        ///     Updates an existing student in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clubName"></param>
+        /// <param name="position"></param>
+        /// <param name="studentName"></param>
+        /// <param name="preferredName"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="agreementSigned"></param>
+        /// <param name="trainingComplete"></param>
+        /// <param name="membershipPurchased"></param>
+        /// <param name="foodCertified"></param>
         [Authorize]
         public void UpdateStudent(int id, string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
         {
             _context.UpdateStudent(id, clubName, position, studentName, preferredName, phoneNumber, emailAddress, agreementSigned, trainingComplete, membershipPurchased, foodCertified);
         }
 
-        // deletes a student
+        /// <summary>
+        ///     Deletes an existing student from the database
+        /// </summary>
+        /// <param name="id"></param>
         [Authorize]
         public void DeleteStudent(int id)
         {
             _context.DeleteStudent(id);
         }
 
-        // get society list
+        /// <summary>
+        ///     Gets a list of societies
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetSocietyList()
         {
@@ -72,7 +106,10 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // get position list
+        /// <summary>
+        ///     Gets a list of positions
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetPositionList()
         {
@@ -86,7 +123,10 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // get email templates
+        /// <summary>
+        ///     Gets a list of email templates
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetEmailTemplates()
         {
@@ -100,7 +140,12 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // send email to multiple students
+        /// <summary>
+        ///     Sends an email to a list of students using a template
+        /// </summary>
+        /// <param name="templateID"></param>
+        /// <param name="students"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult SendEmailToStudents(int templateID, List<Students> students)
         {
@@ -119,14 +164,21 @@ namespace StudentUnionApp.Controllers
             return Json(new { success = success }, JsonRequestBehavior.AllowGet);
         }
 
-        // upload students from excel
+        /// <summary>
+        ///     Using an uploaded file, processes the file and adds students to the database
+        /// </summary>
+        /// <param name="file">Excel file</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult UploadStudents(string file)
         {
             return Json(new Upload().ProcessBase64File(file), JsonRequestBehavior.AllowGet);
         }
 
-        // download template excel file
+        /// <summary>
+        ///     Downloads the student upload template
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult DownloadTemplate()
         {

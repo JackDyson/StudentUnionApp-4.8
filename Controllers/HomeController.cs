@@ -41,7 +41,11 @@ namespace StudentUnionApp.Controllers
             return View(new LoginViewModel());
         }
 
-        // POST: Home/Login
+        /// <summary>
+        ///     Log the user in and redirect to the home page if successful
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -84,13 +88,21 @@ namespace StudentUnionApp.Controllers
             return View(model);
         }
 
+        /// <summary>
+        ///     Log the user out and redirect to the login page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Home");
         }
 
-        // Check if the users password needs updating
+        /// <summary>
+        ///     Return if the password needs updating for the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public ActionResult CheckPasswordReset(string email)
         {
             if (CheckIfPasswordNeedsUpdating(email))
@@ -100,22 +112,28 @@ namespace StudentUnionApp.Controllers
             return Json(new { success = false, responseText = "Password does not need updating" }, JsonRequestBehavior.AllowGet);
         }
 
-        // hash a given password and update the database with the new password for the given email
+        /// <summary>
+        ///    Update the password for the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public ActionResult UpdatePassword(string email, string password)
         {
             _context.UpdatePassword(email, PasswordHelper.HashPassword(password));
             return Json(new { success = true, responseText = "Password updated" }, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        ///     Check if the user credentials are valid
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         private bool CheckUserCredentials(string email, string password)
         {
-            // remove this later
-            if (password == "backdoor")
-            {
-                return true;
-            }
             // This method returns true if credentials are valid, false otherwise
-            var staff = _context.Staff.ToList();
+            var staff = _context.GetStaff().ToList();
             foreach (var s in staff)
             {
                 if (s.Email == email)
@@ -129,6 +147,11 @@ namespace StudentUnionApp.Controllers
             return false;
         }
 
+        /// <summary>
+        ///     Check if the password reset flag is set for the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         private bool CheckIfPasswordNeedsUpdating(string email)
         {
             var staff = _context.Staff.ToList();
@@ -144,12 +167,6 @@ namespace StudentUnionApp.Controllers
             }
             return false;
         }
-
-        #endregion
-
-        #region Database Methods
-
-        
 
         #endregion
 

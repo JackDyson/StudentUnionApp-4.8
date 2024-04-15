@@ -1,4 +1,7 @@
-﻿!function () {
+﻿// Purpose: Contains global JavaScript functions that are used across the entire application
+
+// Set up the theme settings if the user does not have any saved settings. If they do, apply them
+!function () {
     var theme = localStorage.getItem('theme');
     if (theme) {
         $('body').attr('theme', theme);
@@ -27,6 +30,7 @@
     }
 }();
 
+// Toggle between light and dark mode when the theme button is clicked
 $(document).on("click", '#theme', function () {
     if ($('#theme').hasClass('uil-sunset')) {
         $('#theme').removeClass('uil-sunset').addClass('uil-moonset');
@@ -40,10 +44,11 @@ $(document).on("click", '#theme', function () {
     }
 });
 
+// Set up the bubble animation and spawning if the user has the animation enabled
 $(document).ready(function () {
     var bubblesEnabled = localStorage.getItem('bg-animation');
     if (bubblesEnabled === 'true') {
-        const numberOfBubbles = parseInt(parseInt(window.innerWidth) / 140);
+        const numberOfBubbles = parseInt(parseInt(window.innerWidth) / 140) + 1;
         const container = $('body');
 
         for (let i = 0; i < numberOfBubbles; i++) {
@@ -62,6 +67,7 @@ $(document).ready(function () {
     }
 });
 
+// When the logout button is clicked, log the user out
 $(document).on("click", '#logout', function () {
     $.ajax({
         "url": '/Home/LogOut',
@@ -82,11 +88,5 @@ $(document).on("click", '#forward', function () {
     window.history.forward();
 });
 
-
-//// function to replace \n with <br> within a string
-//function nl2br(str, is_xhtml) {
-//    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
-//    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
-//}
 
 

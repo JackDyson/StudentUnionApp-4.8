@@ -18,7 +18,10 @@ namespace StudentUnionApp.Controllers
 
         #region Database Methods
 
-        // get list of societies
+        /// <summary>
+        ///     Returns a list of societies from the database
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetSocieties()
         {
@@ -32,7 +35,11 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // delete society
+        /// <summary>
+        ///     Deletes an existing society from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult DeleteSociety(int id)
         {
@@ -49,7 +56,11 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // add society
+        /// <summary>
+        ///     Adds a society to the database
+        /// </summary>
+        /// <param name="society"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult AddSociety(Societies society)
         {
@@ -65,7 +76,10 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // get list of positions
+        /// <summary>
+        ///     Returns a list of positions from the database
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetPositions()
         {
@@ -79,7 +93,11 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // delete position
+        /// <summary>
+        ///     Deletes an existing position from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult DeletePosition(int id)
         {
@@ -96,7 +114,11 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // add position
+        /// <summary>
+        ///     Add a position to the database
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult AddPosition(Positions position)
         {

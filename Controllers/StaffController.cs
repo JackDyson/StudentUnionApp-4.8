@@ -19,7 +19,10 @@ namespace StudentUnionApp.Controllers
 
         #region Database Methods
 
-        // returns all staff
+        /// <summary>
+        ///     Returns a list of all staff
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetStaff()
         {
@@ -33,14 +36,25 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // adds a new staff
+        /// <summary>
+        ///     Creates a new staff member in the database
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <param name="role"></param>
         [Authorize]
         public void AddStaff(string name, string email, string role)
         {
             _context.AddStaff(name, email, "password", role);
         }
 
-        // updates a staff
+        /// <summary>
+        ///     Updates an existing staff member in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="role"></param>
+        /// <param name="passwordReset"></param>
         [Authorize]
         public void UpdateStaff(int id, string name, string role, bool passwordReset)
         {
@@ -49,7 +63,10 @@ namespace StudentUnionApp.Controllers
 
         
 
-        // deletes a staff
+        /// <summary>
+        ///     Deletes an existing staff member from the database
+        /// </summary>
+        /// <param name="id"></param>
         [Authorize]
         public void DeleteStaff(int id)
         {

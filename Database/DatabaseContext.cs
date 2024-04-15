@@ -42,13 +42,28 @@ public class DatabaseContext : DbContext
 
     #region Students
 
-    // returns all students
+    /// <summary>
+    ///     Returns all students
+    /// </summary>
+    /// <returns></returns>
     public List<Students> GetStudents()
     {
         return Students.ToList();
     }
 
-    // adds a new student
+    /// <summary>
+    ///     Adds a new student
+    /// </summary>
+    /// <param name="clubName"></param>
+    /// <param name="position"></param>
+    /// <param name="studentName"></param>
+    /// <param name="preferredName"></param>
+    /// <param name="phoneNumber"></param>
+    /// <param name="emailAddress"></param>
+    /// <param name="agreementSigned"></param>
+    /// <param name="trainingComplete"></param>
+    /// <param name="membershipPurchased"></param>
+    /// <param name="foodCertified"></param>
     public void AddStudent(string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
     {
         try
@@ -75,7 +90,20 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // updates a student
+    /// <summary>
+    ///     Updates an existing student
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="clubName"></param>
+    /// <param name="position"></param>
+    /// <param name="studentName"></param>
+    /// <param name="preferredName"></param>
+    /// <param name="phoneNumber"></param>
+    /// <param name="emailAddress"></param>
+    /// <param name="agreementSigned"></param>
+    /// <param name="trainingComplete"></param>
+    /// <param name="membershipPurchased"></param>
+    /// <param name="foodCertified"></param>
     public void UpdateStudent(int id, string clubName, string position, string studentName, string preferredName, string phoneNumber, string emailAddress, bool agreementSigned, bool trainingComplete, bool membershipPurchased, bool foodCertified)
     {
         try
@@ -99,7 +127,10 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // deletes a student
+    /// <summary>
+    ///     Deletes an existing student
+    /// </summary>
+    /// <param name="id"></param>
     public void DeleteStudent(int id)
     {
         try
@@ -118,13 +149,22 @@ public class DatabaseContext : DbContext
 
     #region Staff
 
-    // returns all staff
+    /// <summary>
+    ///     Returns all staff members
+    /// </summary>
+    /// <returns></returns>
     public List<Staff> GetStaff()
     {
         return Staff.ToList();
     }
 
-    // adds a new staff member
+    /// <summary>
+    ///     Adds a new staff member
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="role"></param>
     public void AddStaff(string name, string email, string password, string role)
     {
         try
@@ -146,7 +186,13 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // updates a staff member
+    /// <summary>
+    ///     Updates an existing staff member
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <param name="role"></param>
+    /// <param name="passwordReset"></param>
     public void UpdateStaff(int id, string name, string role, bool passwordReset)
     {
         try
@@ -163,7 +209,10 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // deletes a staff member
+    /// <summary>
+    ///     Deletes an existing staff member
+    /// </summary>
+    /// <param name="id"></param>
     public void DeleteStaff(int id)
     {
         try
@@ -178,7 +227,11 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // updates a staff member's password
+    /// <summary>
+    ///     Updates the password of a staff member
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
     public void UpdatePassword(string email, string password)
     {
         try
@@ -198,13 +251,19 @@ public class DatabaseContext : DbContext
 
     #region Societies
 
-    // returns all societies
+    /// <summary>
+    ///     Returns all societies
+    /// </summary>
+    /// <returns></returns>
     public List<Societies> GetSocieties()
     {
         return Societies.ToList();
     }
 
-    // adds a new society
+    /// <summary>
+    ///     Adds a new society
+    /// </summary>
+    /// <param name="societyName"></param>
     public void AddSociety(string societyName)
     {
         try
@@ -222,7 +281,10 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // deletes a society
+    /// <summary>
+    ///     Deletes an existing society
+    /// </summary>
+    /// <param name="id"></param>
     public void DeleteSociety(int id)
     {
         try
@@ -241,13 +303,19 @@ public class DatabaseContext : DbContext
 
     #region Positions
 
-    // returns all positions
+    /// <summary>
+    ///     Returns all positions
+    /// </summary>
+    /// <returns></returns>
     public List<Positions> GetPositions()
     {
         return Positions.ToList();
     }
 
-    // adds a new position
+    /// <summary>
+    ///     Adds a new position
+    /// </summary>
+    /// <param name="positionName"></param>
     public void AddPosition(string positionName)
     {
         try
@@ -265,7 +333,10 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // deletes a position
+    /// <summary>
+    ///     Deletes an existing position
+    /// </summary>
+    /// <param name="id"></param>
     public void DeletePosition(int id)
     {
         try
@@ -284,19 +355,31 @@ public class DatabaseContext : DbContext
 
     #region Email Templates
 
-    //returns all email templates
+    /// <summary>
+    ///     Returns all email templates
+    /// </summary>
+    /// <returns></returns>
     public List<Email_Templates> GetEmailTemplates() 
     { 
         return Email_Templates.ToList();
     }
 
-    // returns a specific email template
+    /// <summary>
+    ///     Returns an email template by ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public Email_Templates GetEmailTemplate(int id)
     {
         return Email_Templates.Find(id);
     }
 
-    // adds a new email template
+    /// <summary>
+    ///     Adds a new email template
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="subject"></param>
+    /// <param name="content"></param>
     public void AddEmailTemplate(string title, string subject, string content)
     {
         try
@@ -316,7 +399,13 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // updates an email template
+    /// <summary>
+    ///     Updates an existing email template
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="title"></param>
+    /// <param name="subject"></param>
+    /// <param name="content"></param>
     public void UpdateEmailTemplate(int id, string title, string subject, string content)
     {
         try
@@ -333,7 +422,10 @@ public class DatabaseContext : DbContext
         }
     }
 
-    // deletes an email template
+    /// <summary>
+    ///     Deletes an existing email template
+    /// </summary>
+    /// <param name="id"></param>
     public void DeleteEmailTemplate(int id)
     {
         try

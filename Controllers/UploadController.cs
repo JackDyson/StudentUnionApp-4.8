@@ -12,6 +12,11 @@ public class Upload : Controller
 {
     DatabaseContext _context = new DatabaseContext();
 
+    /// <summary>
+    ///     Takes in a template Excel file and processes the data to upload students to the database
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize]
     public ActionResult ProcessBase64File(string file)
@@ -35,10 +40,26 @@ public class Upload : Controller
 
                         if (worksheet != null)
                         {
-                            // Assuming your object type is ExampleObject
+                            // check if the worksheet has the correct column headers
+                            if (worksheet.Cells[1, 1].Value?.ToString().ToUpper() != "CLUB NAME" ||
+                                worksheet.Cells[1, 2].Value?.ToString().ToUpper() != "POSITION" ||
+                                worksheet.Cells[1, 3].Value?.ToString().ToUpper() != "STUDENT NAME" ||
+                                worksheet.Cells[1, 4].Value?.ToString().ToUpper() != "PREF. NAME" ||
+                                worksheet.Cells[1, 5].Value?.ToString().ToUpper() != "PHONE" ||
+                                worksheet.Cells[1, 6].Value?.ToString().ToUpper() != "EMAIL" ||
+                                worksheet.Cells[1, 7].Value?.ToString().ToUpper() != "AGREEMENT" ||
+                                worksheet.Cells[1, 8].Value?.ToString().ToUpper() != "TRAINING" ||
+                                worksheet.Cells[1, 9].Value?.ToString().ToUpper() != "MEMBERSHIP" ||
+                                worksheet.Cells[1, 10].Value?.ToString().ToUpper() != "FOOD")
+                            {
+                                return Json(new { success = false, message = "Incorrect file template. Please download the template in order to upload" });
+                            }
+                            
+                            // Create a list of students to upload
                             List<UploadStudentModel> dataList = new List<UploadStudentModel>();
 
-                            for (int row = 3; row <= worksheet.Dimension.End.Row; row++) // Assuming data starts from row 2
+                            // Loop through the rows of the worksheet and add the student data to the list
+                            for (int row = 3; row <= worksheet.Dimension.End.Row; row++) 
                             {
                                 UploadStudentModel obj = new UploadStudentModel();
                                 {

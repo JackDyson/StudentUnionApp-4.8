@@ -15,6 +15,12 @@ namespace StudentUnionApp.Controllers
             return View();
         }
 
+        /// <summary>
+        ///     Sends feedback email to the admin
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <param name="message"></param>
         [HttpPost]
         [Authorize]
         public void SendFeedback(string name, string email, string message)

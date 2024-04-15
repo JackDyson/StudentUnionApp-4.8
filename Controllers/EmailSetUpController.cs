@@ -18,7 +18,10 @@ namespace StudentUnionApp.Controllers
 
         #region Database Methods
 
-        // returns all email templates
+        /// <summary>
+        ///     Returns a list of email templates
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult GetEmailTemplates()
         {
@@ -32,21 +35,35 @@ namespace StudentUnionApp.Controllers
             }
         }
 
-        // adds a new email template
+        /// <summary>
+        ///     Adds an email template
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="subject"></param>
+        /// <param name="content"></param>
         [Authorize]
         public void AddEmailTemplate(string title, string subject, string content)
         {
             _context.AddEmailTemplate(title, subject, content);
         }
 
-        // updates an email template
+        /// <summary>
+        ///     Updates an existing email template
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="subject"></param>
+        /// <param name="content"></param>
         [Authorize]
         public void UpdateEmailTemplate(int id, string title, string subject, string content)
         {
             _context.UpdateEmailTemplate(id, title, subject, content);
         }
 
-        // deletes an email template
+        /// <summary>
+        ///     Deletes an existing email template
+        /// </summary>
+        /// <param name="id"></param>
         [Authorize]
         public void DeleteEmailTemplate(int id)
         {
