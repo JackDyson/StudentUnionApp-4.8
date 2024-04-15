@@ -138,6 +138,8 @@
         // open the edit modal when any button with id starting with edit- is clicked
         var idToEdit = null;
         $(document).on('click', 'button[id^="edit-"]', function (e) {
+            // show the delete button
+            $('#delete').show();
             $('#addModal').attr('id', 'editModal');
             $('#saveAddModal').attr('id', 'saveEditModal');
             idToEdit = $(this).attr('id').split('-')[1];
@@ -179,6 +181,8 @@
 
         // Add new email template
         $(document).on('click', '#add', function () {
+            // hide the delete button
+            $('#delete').hide();
             $('#editModal').attr('id', 'addModal');
             $('#saveEditModal').attr('id', 'saveAddModal');
             $('#title').val('');
