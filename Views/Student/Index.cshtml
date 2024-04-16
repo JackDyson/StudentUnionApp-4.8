@@ -148,10 +148,6 @@
             <div class="modal-body">
                 <div class="row form-container">
                     <div class="col-lg-6">
-                        @*<div class="form-group">
-                            <label class="control-label" for="clubName">Club Name</label>
-                            <input class="form-control" id="clubName" type="text">
-                        </div>*@
                         <div class="form-group">
                             <label class="control-label" for="clubName">Club Name</label>
                             <select class="form-select" id="clubName">
@@ -160,10 +156,6 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        @*<div class="form-group">
-                            <label class="control-label" for="position">Position</label>
-                            <input class="form-control" id="position" type="text">
-                        </div>*@
                         <div class="form-group" >
                             <label class="control-label" for="position">Position</label>
                             <select class="form-select" id="position">
@@ -392,22 +384,22 @@
             });
 
             // Initialize the DataTable
-            table = $('#test-table').DataTable({ // Initialize DataTable on your table
+            table = $('#test-table').DataTable({ 
                 "ajax": {
-                    "url": '/Student/GetStudents', // The URL to the server-side data
-                    "dataSrc": "", // Assuming the returned data is an array at the root level
-                    "type": "GET", // Method type
-                    "dataType": 'json' // Data type expected from the server
+                    "url": '/Student/GetStudents', 
+                    "dataSrc": "", 
+                    "type": "GET", 
+                    "dataType": 'json' 
                 },
-                "dom": 'Bt', // Add the buttons to the DOM
-                "buttons": [ // Define the buttons
+                "dom": 'Bt', 
+                "buttons": [ 
                     {
-                        extend: 'excelHtml5', // Extend the buttons
-                        text: 'Export', // Button text
-                        className: 'btn btn-success', // Button class
-                        title: '', // Title of the Excel file
+                        extend: 'excelHtml5', 
+                        text: 'Export', 
+                        className: 'btn btn-success', 
+                        title: '', 
                         exportOptions: {
-                            columns: [1, 2, 4, 5, 7, 8, 9, 10, 11, 12], // Columns to export
+                            columns: [1, 2, 4, 5, 7, 8, 9, 10, 11, 12], 
                             format: {
                                 body: function (data, row, column, node) {
                                     // Check for icons and replace with TRUE or FALSE
@@ -420,13 +412,13 @@
                                 }
                             }
                         },
-                        filename: 'HSU-Test-Data' // File name
+                        filename: 'HSU-Test-Data' 
                     }
                 ],
-                "serverSide": false, // Server-side processing
-                "order": [[0, "asc"]], // Initial sorting column
-                "paging": false, // Enable paging
-                "searching": true, // Enable searching
+                "serverSide": false, 
+                "order": [[0, "asc"]], 
+                "paging": false, 
+                "searching": true, 
                 "columnDefs": [
                     { "title": "Club", targets: 0 },
                     { "title": "Club Name", "targets": 1 },
@@ -446,7 +438,7 @@
                     { "className": "text-center", "targets": [9, 10, 11, 12] },
                     { "visible": false, "targets": getColumnsToHide() }
                 ],
-                "columns": [ // Define columns and map them to data source properties
+                "columns": [ 
                     {
                         "data": null,
                         "render": function (data, type, row) {
