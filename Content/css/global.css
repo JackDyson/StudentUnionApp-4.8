@@ -22,8 +22,8 @@
     --nav-bg: #e72981;
     --nav-font-color: #ffffff;
     --nav-height: 50px;
-    --bubble-border: #d81b60 /* Darker pink border */;
-    --bubble-bg: radial-gradient(circle at center, #ff4081, #d81b60); /* Gradient */
+    --bubble-border: #d81b60;
+    --bubble-bg: radial-gradient(circle at center, #ff4081, #d81b60);
     --red: #DD1111;
     --green: #11DD11;
     --accent1: #e72981;

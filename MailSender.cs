@@ -24,14 +24,6 @@ namespace StudentUnionApp
         public MailSender()
         {
             _Context = new DatabaseContext();
-            #if DEBUG
-            _Smtp = new SmtpClient()
-            {
-                Host = "mailcluster.protocall.local",
-                Port = 25,
-                EnableSsl = false
-            };
-            #else
             _Smtp = new SmtpClient()
             {
                 Host = "smtp.ionos.co.uk",
@@ -39,7 +31,6 @@ namespace StudentUnionApp
                 EnableSsl = false,
                 Credentials = new System.Net.NetworkCredential("info@sutest.co.uk", "uaW4ATuZRUcB")
             };
-            #endif
         }
 
 
