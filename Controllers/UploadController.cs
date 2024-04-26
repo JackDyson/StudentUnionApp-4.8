@@ -22,7 +22,7 @@ public class Upload : Controller
     public ActionResult ProcessBase64File(string file)
     {
         // Set EPPlus license context
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Or LicenseContext.Commercial
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; 
 
         if (!string.IsNullOrEmpty(file))
         {

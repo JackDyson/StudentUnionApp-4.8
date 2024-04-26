@@ -131,6 +131,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button id="delete" type="button" class="btn btn-primary">Delete</button>
                 <button id="saveEditModal" type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -657,6 +658,37 @@
                     trainingComplete: $('#edit-training').is(':checked'),
                     membershipPurchased: $('#edit-membership').is(':checked'),
                     foodCertified: $('#edit-food').is(':checked')
+                },
+                success: function (data) {
+                    selectedStudents.shift();
+                    if (selectedStudents.length === 0) {
+                        $('#editModal').modal('hide');
+                        table.ajax.reload();
+                    }
+                    else {
+                        $('#studentName').text(selectedStudents[0].Student_Name);
+                        $('#edit-clubName').val(selectedStudents[0].Club_Name).trigger('change');
+                        $('#edit-position').val(selectedStudents[0].Position).trigger('change');
+                        $('#edit-name').val(selectedStudents[0].Student_Name);
+                        $('#edit-prefName').val(selectedStudents[0].Preferred_Name);
+                        $('#edit-phoneNum').val(selectedStudents[0].Phone_Number);
+                        $('#edit-email').val(selectedStudents[0].Email_Address);
+                        $('#edit-agreement').prop('checked', selectedStudents[0].Agreement_Signed);
+                        $('#edit-training').prop('checked', selectedStudents[0].Training_Complete);
+                        $('#edit-membership').prop('checked', selectedStudents[0].Membership_Purchased);
+                        $('#edit-food').prop('checked', selectedStudents[0].Food_Certified);
+                    }
+                }
+            });
+        });
+
+        // when you click the delete button, delete the selected student
+        $(document).on("click", "#delete", function () {
+            $.ajax({
+                url: '/Student/DeleteStudent',
+                type: 'POST',
+                data: {
+                    id: selectedStudents[0].Student_ID
                 },
                 success: function (data) {
                     selectedStudents.shift();

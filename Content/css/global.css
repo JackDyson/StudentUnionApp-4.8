@@ -1,17 +1,4 @@
 ﻿/* Global CSS */
-/* #region Fonts */
-
-@font-face {
-    font-family: 'Corbel';
-    src: url('../fonts/CORBEL.TTF') format('truetype');
-}
-
-@font-face {
-    font-family: 'CorbelBold';
-    src: url('../fonts/CORBELB.TTF') format('truetype');
-}
-
-/* #endregion */
 
 /* Light Mode */
 :root {
