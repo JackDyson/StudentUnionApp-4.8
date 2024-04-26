@@ -75,7 +75,12 @@ public class Upload : Controller
                                     obj.Food = worksheet.Cells[row, 10].Value?.ToString().ToUpper() == "TRUE";
                                 };
 
-                                dataList.Add(obj);
+                                // if the student has all the required data, add them to the list
+                                if (!string.IsNullOrEmpty(obj.ClubName) && !string.IsNullOrEmpty(obj.Position) && !string.IsNullOrEmpty(obj.Name) && !string.IsNullOrEmpty(obj.Email))
+                                {
+                                    dataList.Add(obj);
+                                }
+
                             }
                             // Upload data to database
                             int uploadedStudents = 0;
